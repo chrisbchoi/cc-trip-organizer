@@ -4,13 +4,13 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // Enable CORS for frontend
   app.enableCors({
     origin: 'http://localhost:4200',
     credentials: true,
   });
-  
+
   // Enable validation pipes
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,7 +19,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`Backend running on http://localhost:${port}`);

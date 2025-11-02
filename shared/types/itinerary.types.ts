@@ -8,7 +8,7 @@ export interface ItineraryItemBase {
   tripId: string;
   type: 'flight' | 'transport' | 'accommodation';
   startDateTime: string; // ISO 8601 datetime string
-  endDateTime: string;   // ISO 8601 datetime string
+  endDateTime: string; // ISO 8601 datetime string
   notes?: string;
   createdAt: string;
   updatedAt: string;

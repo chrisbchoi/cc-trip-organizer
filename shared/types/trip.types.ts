@@ -7,7 +7,7 @@ export interface Trip {
   name: string;
   description?: string;
   startDate: string; // ISO 8601 date string
-  endDate: string;   // ISO 8601 date string
+  endDate: string; // ISO 8601 date string
   createdAt: string; // ISO 8601 datetime string
   updatedAt: string; // ISO 8601 datetime string
 }

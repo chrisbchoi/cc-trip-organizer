@@ -17,6 +17,7 @@ A comprehensive trip planning and organization application that helps travelers 
 ## Technology Stack
 
 ### Frontend
+
 - **Angular 18+** - Modern web framework
 - **NgRx Signals** - State management with reactive signals
 - **SCSS** - Styling with mobile-first approach
@@ -24,6 +25,7 @@ A comprehensive trip planning and organization application that helps travelers 
 - **Angular CDK** - Drag-and-drop functionality
 
 ### Backend (BFF)
+
 - **NestJS** - Backend for Frontend API layer
 - **TypeScript 5.0+** - Type-safe server code
 - **SQLite** - Local database storage
@@ -108,6 +110,7 @@ npm run dev
 ```
 
 This will start:
+
 - Backend API at http://localhost:3000
 - Frontend app at http://localhost:4200
 
@@ -188,6 +191,7 @@ trip-organizer/
 The backend API provides the following endpoints:
 
 ### Trips
+
 - `GET /api/trips` - Get all trips
 - `GET /api/trips/:id` - Get trip by ID
 - `POST /api/trips` - Create new trip
@@ -195,6 +199,7 @@ The backend API provides the following endpoints:
 - `DELETE /api/trips/:id` - Delete trip
 
 ### Itinerary Items
+
 - `GET /api/trips/:tripId/itinerary` - Get all items for a trip
 - `POST /api/trips/:tripId/itinerary/flight` - Create flight
 - `POST /api/trips/:tripId/itinerary/transport` - Create transportation
@@ -203,30 +208,37 @@ The backend API provides the following endpoints:
 - `DELETE /api/itinerary/:id` - Delete item
 
 ### Gap Detection
+
 - `GET /api/trips/:tripId/gaps` - Get detected gaps in itinerary
 
 ### Maps (Proxied)
+
 - `POST /api/maps/geocode` - Geocode an address
 - `GET /api/maps/place/:placeId` - Get place details
 
 ### Export
+
 - `GET /api/trips/:id/export/json` - Export trip as JSON
 - `GET /api/trips/:id/export/ical` - Export trip as iCalendar
 
 ## Key Features Implementation
 
 ### Gap Detection
+
 The system automatically detects:
+
 - Time gaps between consecutive items (>2 hours)
 - Location mismatches (arrival city ≠ next departure city)
 - Missing overnight accommodations
 
 ### Google Maps Integration
+
 - All location data is geocoded through the BFF API
 - API keys are never exposed to the frontend
 - Results are cached in the database to minimize API calls
 
 ### Drag-and-Drop
+
 - Uses Angular CDK for smooth drag-and-drop
 - Automatically recalculates dates/times when items are reordered
 - Triggers gap detection after reordering
@@ -262,6 +274,7 @@ The system automatically detects:
 ## Accessibility
 
 The application follows WCAG 2.1 Level AA guidelines:
+
 - Keyboard navigation support
 - Screen reader compatible
 - Sufficient color contrast
@@ -281,18 +294,21 @@ MIT License - see LICENSE file for details
 ## Roadmap
 
 ### Phase 1 (Current)
+
 - ✅ Basic trip CRUD operations
 - ✅ Itinerary item management
 - ✅ Gap detection
 - ✅ Google Maps integration
 
 ### Phase 2 (Planned)
+
 - PWA support for offline mode
 - Multi-timezone display
 - Advanced map views with routes
 - Export to PDF
 
 ### Phase 3 (Future)
+
 - Cloud sync
 - Multi-user collaboration
 - Budget tracking

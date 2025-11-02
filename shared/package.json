@@ -9,7 +9,10 @@
     "watch": "tsc --watch",
     "clean": "rm -rf dist"
   },
-  "keywords": ["types", "typescript"],
+  "keywords": [
+    "types",
+    "typescript"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
