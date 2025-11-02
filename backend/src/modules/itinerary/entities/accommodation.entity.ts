@@ -1,15 +1,6 @@
 import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { ItineraryItem } from './itinerary-item.entity';
-
-export interface Location {
-  address: string;
-  formattedAddress?: string;
-  latitude: number;
-  longitude: number;
-  city?: string;
-  country?: string;
-  placeId?: string;
-}
+import { Location } from '../types/location.interface';
 
 @Entity('accommodations')
 export class Accommodation {
@@ -38,7 +29,7 @@ export class Accommodation {
   @JoinColumn({ name: 'itinerary_item_id' })
   itineraryItem!: ItineraryItem;
 
-  // Virtual property for easier access
+  // Virtual property for easier access to JSON column
   get location(): Location {
     return JSON.parse(this.locationJson);
   }
