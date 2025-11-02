@@ -7,6 +7,8 @@ import { Accommodation } from './entities/accommodation.entity';
 import { ItineraryRepository } from './itinerary.repository';
 import { ItineraryService } from './itinerary.service';
 import { ItineraryController } from './itinerary.controller';
+import { GapDetectionService } from './gap-detection.service';
+import { GapDetectionController } from './gap-detection.controller';
 
 @Module({
   imports: [
@@ -17,8 +19,8 @@ import { ItineraryController } from './itinerary.controller';
       Accommodation,
     ]),
   ],
-  controllers: [ItineraryController],
-  providers: [ItineraryRepository, ItineraryService],
-  exports: [ItineraryRepository, ItineraryService],
+  controllers: [ItineraryController, GapDetectionController],
+  providers: [ItineraryRepository, ItineraryService, GapDetectionService],
+  exports: [ItineraryRepository, ItineraryService, GapDetectionService],
 })
 export class ItineraryModule {}
