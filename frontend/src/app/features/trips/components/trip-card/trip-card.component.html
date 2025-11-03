@@ -1,0 +1,42 @@
+<article 
+  class="trip-card"
+  (click)="onCardClick()"
+  (keydown.enter)="onCardClick()"
+  (keydown.space)="onCardClick()"
+  tabindex="0"
+  role="button"
+  [attr.aria-label]="'View trip: ' + trip.title">
+  
+  <div class="trip-card-header">
+    <h3 class="trip-title">{{ trip.title }}</h3>
+    <button
+      type="button"
+      class="btn-icon delete-btn"
+      (click)="onDeleteClick($event)"
+      [attr.aria-label]="'Delete trip: ' + trip.title"
+      title="Delete trip">
+      <span aria-hidden="true">🗑️</span>
+    </button>
+  </div>
+
+  <div class="trip-card-body">
+    <div class="trip-dates">
+      <div class="date-item">
+        <span class="date-label">Start:</span>
+        <span class="date-value">{{ trip.startDate | dateFormat:'medium' }}</span>
+      </div>
+      <div class="date-item">
+        <span class="date-label">End:</span>
+        <span class="date-value">{{ trip.endDate | dateFormat:'medium' }}</span>
+      </div>
+    </div>
+
+    @if (trip.description) {
+      <p class="trip-description">{{ trip.description }}</p>
+    }
+  </div>
+
+  <div class="trip-card-footer">
+    <span class="view-link">View Details →</span>
+  </div>
+</article>
