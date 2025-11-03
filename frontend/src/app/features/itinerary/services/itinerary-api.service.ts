@@ -1,11 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Flight } from '../../../core/models/flight.model';
 import { Transport } from '../../../core/models/transport.model';
 import { Accommodation } from '../../../core/models/accommodation.model';
-import { environment } from '../../../../environments/environment';
+import { ApiService } from '../../../core/services/api.service';
 
 /**
  * Union type for all itinerary item types
@@ -34,13 +33,13 @@ export interface ItineraryGap {
 
 /**
  * Service for making API calls related to itinerary items
+ * Uses the base ApiService for HTTP operations
  */
 @Injectable({
   providedIn: 'root',
 })
 export class ItineraryApiService {
-  private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private api = inject(ApiService);
 
   /**
    * Get all itinerary items for a trip
@@ -48,8 +47,8 @@ export class ItineraryApiService {
    * @returns Observable of ItineraryItem array
    */
   getItems(tripId: string): Observable<ItineraryItem[]> {
-    return this.http
-      .get<ItineraryItemResponse[]>(`${this.apiUrl}/trips/${tripId}/itinerary`)
+    return this.api
+      .get<ItineraryItemResponse[]>(`trips/${tripId}/itinerary`)
       .pipe(map((items) => items.map((item) => this.mapToItineraryItem(item))));
   }
 
@@ -59,8 +58,8 @@ export class ItineraryApiService {
    * @returns Observable of ItineraryItem
    */
   getItem(id: string): Observable<ItineraryItem> {
-    return this.http
-      .get<ItineraryItemResponse>(`${this.apiUrl}/itinerary/${id}`)
+    return this.api
+      .get<ItineraryItemResponse>(`itinerary/${id}`)
       .pipe(map((item) => this.mapToItineraryItem(item)));
   }
 
@@ -71,8 +70,8 @@ export class ItineraryApiService {
    * @returns Observable of created Flight
    */
   createFlight(tripId: string, flight: Partial<Flight>): Observable<Flight> {
-    return this.http
-      .post<ItineraryItemResponse>(`${this.apiUrl}/trips/${tripId}/itinerary/flight`, flight)
+    return this.api
+      .post<ItineraryItemResponse>(`trips/${tripId}/itinerary/flight`, flight)
       .pipe(map((item) => new Flight(item as unknown as Partial<Flight>)));
   }
 
@@ -83,8 +82,8 @@ export class ItineraryApiService {
    * @returns Observable of created Transport
    */
   createTransport(tripId: string, transport: Partial<Transport>): Observable<Transport> {
-    return this.http
-      .post<ItineraryItemResponse>(`${this.apiUrl}/trips/${tripId}/itinerary/transport`, transport)
+    return this.api
+      .post<ItineraryItemResponse>(`trips/${tripId}/itinerary/transport`, transport)
       .pipe(map((item) => new Transport(item as unknown as Partial<Transport>)));
   }
 
@@ -98,11 +97,8 @@ export class ItineraryApiService {
     tripId: string,
     accommodation: Partial<Accommodation>,
   ): Observable<Accommodation> {
-    return this.http
-      .post<ItineraryItemResponse>(
-        `${this.apiUrl}/trips/${tripId}/itinerary/accommodation`,
-        accommodation,
-      )
+    return this.api
+      .post<ItineraryItemResponse>(`trips/${tripId}/itinerary/accommodation`, accommodation)
       .pipe(map((item) => new Accommodation(item as unknown as Partial<Accommodation>)));
   }
 
@@ -113,8 +109,8 @@ export class ItineraryApiService {
    * @returns Observable of updated ItineraryItem
    */
   updateItem(id: string, updates: Partial<ItineraryItem>): Observable<ItineraryItem> {
-    return this.http
-      .put<ItineraryItemResponse>(`${this.apiUrl}/itinerary/${id}`, updates)
+    return this.api
+      .put<ItineraryItemResponse>(`itinerary/${id}`, updates)
       .pipe(map((item) => this.mapToItineraryItem(item)));
   }
 
@@ -124,7 +120,7 @@ export class ItineraryApiService {
    * @returns Observable of void
    */
   deleteItem(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/itinerary/${id}`);
+    return this.api.delete<void>(`itinerary/${id}`);
   }
 
   /**
@@ -134,8 +130,8 @@ export class ItineraryApiService {
    * @returns Observable of updated ItineraryItem
    */
   reorderItem(id: string, newDate: Date): Observable<ItineraryItem> {
-    return this.http
-      .patch<ItineraryItemResponse>(`${this.apiUrl}/itinerary/${id}/reorder`, {
+    return this.api
+      .patch<ItineraryItemResponse>(`itinerary/${id}/reorder`, {
         startDate: newDate.toISOString(),
       })
       .pipe(map((item) => this.mapToItineraryItem(item)));
@@ -147,7 +143,7 @@ export class ItineraryApiService {
    * @returns Observable of ItineraryGap array
    */
   getGaps(tripId: string): Observable<ItineraryGap[]> {
-    return this.http.get<ItineraryGap[]>(`${this.apiUrl}/trips/${tripId}/gaps`);
+    return this.api.get<ItineraryGap[]>(`trips/${tripId}/gaps`);
   }
 
   /**
