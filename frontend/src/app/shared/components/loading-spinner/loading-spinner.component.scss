@@ -1,0 +1,52 @@
+@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/mixins' as *;
+
+.loading-spinner {
+  @include flex-column-center;
+  padding: $spacing-xxl;
+  min-height: 200px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-circle {
+  width: 100%;
+  height: 100%;
+  border: 4px solid $color-border-light;
+  border-top-color: $color-primary;
+  border-radius: $border-radius-round;
+}
+
+.loading-message {
+  @include body-text;
+  margin-top: $spacing-md;
+  color: $color-text-secondary;
+  text-align: center;
+}
+
+.sr-only {
+  @include sr-only;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+  
+  .spinner-circle {
+    border-top-color: $color-primary;
+    opacity: 0.6;
+  }
+}

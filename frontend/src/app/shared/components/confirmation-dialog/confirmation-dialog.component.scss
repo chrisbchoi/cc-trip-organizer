@@ -1,0 +1,151 @@
+@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/mixins' as *;
+
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal-backdrop;
+  animation: fadeIn $transition-duration-fast $transition-timing-ease-in-out;
+}
+
+.dialog-container {
+  background-color: $color-surface;
+  border-radius: $border-radius-lg;
+  box-shadow: $elevation-4;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+  z-index: $z-index-modal;
+  animation: slideInUp $transition-duration-base $transition-timing-ease-out;
+  
+  @include custom-scrollbar;
+}
+
+.dialog-header {
+  @include flex-between;
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid $color-border;
+  gap: $spacing-md;
+}
+
+.dialog-title {
+  @include heading-3;
+  margin: 0;
+  flex: 1;
+}
+
+.dialog-close {
+  @include button-base;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: $border-radius-round;
+  background-color: transparent;
+  color: $color-text-secondary;
+  font-size: 28px;
+  line-height: 1;
+  transition: $transition-all;
+
+  &:hover {
+    background-color: $color-hover;
+    color: $color-text-primary;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+.dialog-body {
+  padding: $spacing-lg;
+}
+
+.dialog-message {
+  @include body-text;
+  margin: 0;
+  line-height: $line-height-relaxed;
+}
+
+.dialog-footer {
+  @include flex-end;
+  gap: $spacing-sm;
+  padding: $spacing-lg;
+  border-top: $border-width-thin solid $color-border;
+}
+
+// Button variants
+.btn-danger {
+  @include button-base;
+  background-color: $color-warn;
+  color: $color-warn-contrast;
+
+  &:hover:not(:disabled) {
+    background-color: $color-warn-dark;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@include breakpoint-max-sm {
+  .dialog-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .dialog-header,
+  .dialog-body,
+  .dialog-footer {
+    padding: $spacing-md;
+  }
+
+  .dialog-footer {
+    flex-direction: column-reverse;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+// Respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .dialog-backdrop,
+  .dialog-container {
+    animation: none;
+  }
+}
+
+// Focus trap helper
+.dialog-backdrop[role="dialog"] {
+  &:focus {
+    outline: none;
+  }
+}
