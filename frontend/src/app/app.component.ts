@@ -1,20 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { AppState } from './store';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
+/**
+ * Root application component
+ * Provides the main app shell with navigation and router outlet
+ */
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  private store = inject(Store<AppState>);
-  title = 'frontend';
-
-  constructor() {
-    // Verify store is accessible
-    console.log('NgRx Store initialized:', this.store);
-  }
+  title = 'Trip Organizer';
+  currentYear = new Date().getFullYear();
 }
