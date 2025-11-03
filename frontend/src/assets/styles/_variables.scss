@@ -1,0 +1,229 @@
+// ============================================================================
+// Trip Organizer - SCSS Variables
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Color Palette
+// ----------------------------------------------------------------------------
+
+// Primary Colors (Material Blue)
+$color-primary: #1976d2;
+$color-primary-light: #42a5f5;
+$color-primary-dark: #1565c0;
+$color-primary-contrast: #ffffff;
+
+// Accent Colors (Material Amber)
+$color-accent: #ffa726;
+$color-accent-light: #ffb74d;
+$color-accent-dark: #f57c00;
+$color-accent-contrast: #000000;
+
+// Warn/Error Colors
+$color-warn: #f44336;
+$color-warn-light: #ef5350;
+$color-warn-dark: #d32f2f;
+$color-warn-contrast: #ffffff;
+
+// Success/Validation Colors
+$color-success: #4caf50;
+$color-success-light: #66bb6a;
+$color-success-dark: #388e3c;
+
+$color-info: #2196f3;
+$color-info-light: #64b5f6;
+$color-info-dark: #1976d2;
+
+// ----------------------------------------------------------------------------
+// Itinerary Item Type Colors
+// ----------------------------------------------------------------------------
+
+$color-flight: #1976d2;           // Blue - matches primary
+$color-flight-bg: #e3f2fd;         // Light blue background
+$color-flight-border: #90caf9;     // Light blue border
+
+$color-transport: #ff9800;         // Orange
+$color-transport-bg: #fff3e0;      // Light orange background
+$color-transport-border: #ffcc80;  // Light orange border
+
+$color-accommodation: #4caf50;     // Green
+$color-accommodation-bg: #e8f5e9;  // Light green background
+$color-accommodation-border: #a5d6a7; // Light green border
+
+$color-gap: #f44336;               // Red - warning color
+$color-gap-bg: #ffebee;            // Light red background
+$color-gap-border: #ef9a9a;        // Light red border
+
+// ----------------------------------------------------------------------------
+// Neutral Colors
+// ----------------------------------------------------------------------------
+
+$color-text-primary: #212121;
+$color-text-secondary: #757575;
+$color-text-disabled: #bdbdbd;
+$color-text-hint: #9e9e9e;
+
+$color-background: #fafafa;
+$color-background-dark: #f5f5f5;
+$color-surface: #ffffff;
+$color-border: #e0e0e0;
+$color-border-light: #eeeeee;
+$color-divider: #e0e0e0;
+
+$color-hover: rgba(0, 0, 0, 0.04);
+$color-selected: rgba(25, 118, 210, 0.12);
+$color-focus: rgba(25, 118, 210, 0.24);
+
+// ----------------------------------------------------------------------------
+// Spacing Scale (8px base unit)
+// ----------------------------------------------------------------------------
+
+$spacing-base: 8px;
+
+$spacing-xs: $spacing-base * 0.5;    // 4px
+$spacing-sm: $spacing-base;           // 8px
+$spacing-md: $spacing-base * 2;       // 16px
+$spacing-lg: $spacing-base * 3;       // 24px
+$spacing-xl: $spacing-base * 4;       // 32px
+$spacing-xxl: $spacing-base * 6;      // 48px
+$spacing-xxxl: $spacing-base * 8;     // 64px
+
+// Semantic spacing
+$spacing-component: $spacing-md;
+$spacing-section: $spacing-xl;
+$spacing-page: $spacing-xxl;
+
+// ----------------------------------------------------------------------------
+// Typography
+// ----------------------------------------------------------------------------
+
+// Font Families
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+// Font Sizes (Type Scale)
+$font-size-xs: 0.75rem;      // 12px
+$font-size-sm: 0.875rem;     // 14px
+$font-size-base: 1rem;       // 16px
+$font-size-md: 1.125rem;     // 18px
+$font-size-lg: 1.25rem;      // 20px
+$font-size-xl: 1.5rem;       // 24px
+$font-size-xxl: 2rem;        // 32px
+$font-size-xxxl: 2.5rem;     // 40px
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Line Heights
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// Letter Spacing
+$letter-spacing-tight: -0.02em;
+$letter-spacing-normal: 0;
+$letter-spacing-wide: 0.02em;
+
+// ----------------------------------------------------------------------------
+// Layout & Sizing
+// ----------------------------------------------------------------------------
+
+// Container Widths
+$container-max-width: 1200px;
+$container-sm: 640px;
+$container-md: 768px;
+$container-lg: 1024px;
+$container-xl: 1280px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-round: 50%;
+
+// Border Widths
+$border-width-thin: 1px;
+$border-width-medium: 2px;
+$border-width-thick: 4px;
+
+// Shadows (Material Design inspired)
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+// Elevation shadows (more Material-like)
+$elevation-1: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+$elevation-2: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+$elevation-3: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+$elevation-4: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+
+// Z-index Scale
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// ----------------------------------------------------------------------------
+// Responsive Breakpoints (Mobile-First)
+// ----------------------------------------------------------------------------
+
+$breakpoint-xs: 0;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-xxl: 1536px;
+
+// ----------------------------------------------------------------------------
+// Transitions & Animations
+// ----------------------------------------------------------------------------
+
+$transition-duration-fast: 150ms;
+$transition-duration-base: 250ms;
+$transition-duration-slow: 350ms;
+$transition-duration-slower: 500ms;
+
+$transition-timing-ease: ease;
+$transition-timing-ease-in: ease-in;
+$transition-timing-ease-out: ease-out;
+$transition-timing-ease-in-out: ease-in-out;
+
+$transition-all: all $transition-duration-base $transition-timing-ease-in-out;
+$transition-transform: transform $transition-duration-base $transition-timing-ease-out;
+$transition-opacity: opacity $transition-duration-fast $transition-timing-ease-in-out;
+
+// ----------------------------------------------------------------------------
+// Component-Specific Variables
+// ----------------------------------------------------------------------------
+
+// Card
+$card-padding: $spacing-md;
+$card-border-radius: $border-radius-md;
+$card-shadow: $elevation-2;
+$card-hover-shadow: $elevation-4;
+
+// Input/Form
+$input-height: 40px;
+$input-padding: $spacing-sm $spacing-md;
+$input-border-color: $color-border;
+$input-border-radius: $border-radius-sm;
+$input-focus-border-color: $color-primary;
+
+// Button
+$button-height: 40px;
+$button-padding: $spacing-sm $spacing-lg;
+$button-border-radius: $border-radius-sm;
+$button-font-weight: $font-weight-medium;
+
+// Gap Indicator
+$gap-warning-threshold: 120; // minutes (2 hours)
+$gap-critical-threshold: 360; // minutes (6 hours)

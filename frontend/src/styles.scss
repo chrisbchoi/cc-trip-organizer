@@ -1,1 +1,240 @@
-/* You can add global styles to this file, and also import other style files */
+// ============================================================================
+// Trip Organizer - Global Styles
+// ============================================================================
+
+// Import theme files
+@use 'assets/styles/variables' as *;
+@use 'assets/styles/mixins' as *;
+@use 'assets/styles/themes';
+
+// ----------------------------------------------------------------------------
+// CSS Reset & Base Styles
+// ----------------------------------------------------------------------------
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $color-text-primary;
+  background-color: $color-background;
+  min-height: 100vh;
+}
+
+// ----------------------------------------------------------------------------
+// Typography Base Styles
+// ----------------------------------------------------------------------------
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+}
+
+h1 { @include heading-1; }
+h2 { @include heading-2; }
+h3 { @include heading-3; }
+h4 { @include heading-4; }
+
+p {
+  margin: 0;
+  line-height: $line-height-normal;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-duration-fast $transition-timing-ease-in-out;
+
+  &:hover {
+    color: $color-primary-dark;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Lists
+// ----------------------------------------------------------------------------
+
+ul, ol {
+  list-style: none;
+}
+
+// ----------------------------------------------------------------------------
+// Form Elements
+// ----------------------------------------------------------------------------
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  border: $border-width-thin solid $input-border-color;
+  border-radius: $input-border-radius;
+  padding: $input-padding;
+  transition: border-color $transition-duration-fast $transition-timing-ease-in-out;
+
+  &:focus {
+    outline: none;
+    border-color: $input-focus-border-color;
+    box-shadow: 0 0 0 3px $color-focus;
+  }
+
+  &:disabled {
+    background-color: $color-background-dark;
+    color: $color-text-disabled;
+    cursor: not-allowed;
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+// ----------------------------------------------------------------------------
+// Images & Media
+// ----------------------------------------------------------------------------
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+// ----------------------------------------------------------------------------
+// Accessibility
+// ----------------------------------------------------------------------------
+
+.sr-only {
+  @include sr-only;
+}
+
+// Respect user's preference for reduced motion
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  * {
+    border-color: currentColor !important;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Scrollbar Styling
+// ----------------------------------------------------------------------------
+
+* {
+  @include custom-scrollbar;
+}
+
+// ----------------------------------------------------------------------------
+// Angular-specific Global Styles
+// ----------------------------------------------------------------------------
+
+// Router outlet wrapper
+router-outlet {
+  display: none;
+}
+
+// Loading states
+.loading {
+  @include flex-center;
+  min-height: 200px;
+  color: $color-text-secondary;
+}
+
+// Error states
+.error {
+  @include flex-center;
+  min-height: 200px;
+  color: $color-warn;
+}
+
+// Empty states
+.empty-state {
+  @include flex-column-center;
+  padding: $spacing-xxl;
+  color: $color-text-secondary;
+  text-align: center;
+}
+
+// ----------------------------------------------------------------------------
+// Animation Classes
+// ----------------------------------------------------------------------------
+
+.fade-in {
+  @include fade-in;
+}
+
+.slide-in-up {
+  @include slide-in-up;
+}
+
+.pulse {
+  @include pulse;
+}
+
+// ----------------------------------------------------------------------------
+// Print Styles
+// ----------------------------------------------------------------------------
+
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}

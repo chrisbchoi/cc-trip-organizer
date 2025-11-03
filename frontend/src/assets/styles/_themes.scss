@@ -1,0 +1,285 @@
+// ============================================================================
+// Trip Organizer - Theme Configuration
+// ============================================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ----------------------------------------------------------------------------
+// Theme Classes
+// ----------------------------------------------------------------------------
+
+// Light Theme (Default)
+.theme-light {
+  --color-primary: #{$color-primary};
+  --color-primary-light: #{$color-primary-light};
+  --color-primary-dark: #{$color-primary-dark};
+  
+  --color-accent: #{$color-accent};
+  --color-warn: #{$color-warn};
+  --color-success: #{$color-success};
+  
+  --color-background: #{$color-background};
+  --color-surface: #{$color-surface};
+  --color-text-primary: #{$color-text-primary};
+  --color-text-secondary: #{$color-text-secondary};
+  --color-border: #{$color-border};
+}
+
+// Dark Theme (Future Enhancement)
+.theme-dark {
+  --color-primary: #{$color-primary-light};
+  --color-primary-light: #{$color-primary};
+  --color-primary-dark: #{$color-primary-light};
+  
+  --color-accent: #{$color-accent-light};
+  --color-warn: #{$color-warn-light};
+  --color-success: #{$color-success-light};
+  
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b0b0b0;
+  --color-border: #333333;
+}
+
+// ----------------------------------------------------------------------------
+// Itinerary Item Type Theme Classes
+// ----------------------------------------------------------------------------
+
+.item-flight {
+  @include itinerary-item-flight;
+}
+
+.item-transport {
+  @include itinerary-item-transport;
+}
+
+.item-accommodation {
+  @include itinerary-item-accommodation;
+}
+
+.item-gap {
+  @include gap-indicator;
+}
+
+// ----------------------------------------------------------------------------
+// Color Utility Classes
+// ----------------------------------------------------------------------------
+
+.text-primary { color: $color-primary; }
+.text-accent { color: $color-accent; }
+.text-warn { color: $color-warn; }
+.text-success { color: $color-success; }
+.text-info { color: $color-info; }
+
+.text-muted { color: $color-text-secondary; }
+.text-disabled { color: $color-text-disabled; }
+
+.bg-primary { background-color: $color-primary; }
+.bg-accent { background-color: $color-accent; }
+.bg-warn { background-color: $color-warn; }
+.bg-success { background-color: $color-success; }
+.bg-surface { background-color: $color-surface; }
+
+// ----------------------------------------------------------------------------
+// Spacing Utility Classes
+// ----------------------------------------------------------------------------
+
+@each $name, $size in (
+  'xs': $spacing-xs,
+  'sm': $spacing-sm,
+  'md': $spacing-md,
+  'lg': $spacing-lg,
+  'xl': $spacing-xl,
+  'xxl': $spacing-xxl
+) {
+  .m-#{$name} { margin: $size; }
+  .mt-#{$name} { margin-top: $size; }
+  .mr-#{$name} { margin-right: $size; }
+  .mb-#{$name} { margin-bottom: $size; }
+  .ml-#{$name} { margin-left: $size; }
+  .mx-#{$name} { 
+    margin-left: $size; 
+    margin-right: $size; 
+  }
+  .my-#{$name} { 
+    margin-top: $size; 
+    margin-bottom: $size; 
+  }
+  
+  .p-#{$name} { padding: $size; }
+  .pt-#{$name} { padding-top: $size; }
+  .pr-#{$name} { padding-right: $size; }
+  .pb-#{$name} { padding-bottom: $size; }
+  .pl-#{$name} { padding-left: $size; }
+  .px-#{$name} { 
+    padding-left: $size; 
+    padding-right: $size; 
+  }
+  .py-#{$name} { 
+    padding-top: $size; 
+    padding-bottom: $size; 
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Display Utility Classes
+// ----------------------------------------------------------------------------
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+
+// Flexbox utilities
+.flex-row { flex-direction: row; }
+.flex-column { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+
+.align-start { align-items: flex-start; }
+.align-center { align-items: center; }
+.align-end { align-items: flex-end; }
+.align-stretch { align-items: stretch; }
+
+.gap-xs { gap: $spacing-xs; }
+.gap-sm { gap: $spacing-sm; }
+.gap-md { gap: $spacing-md; }
+.gap-lg { gap: $spacing-lg; }
+.gap-xl { gap: $spacing-xl; }
+
+// ----------------------------------------------------------------------------
+// Typography Utility Classes
+// ----------------------------------------------------------------------------
+
+.font-weight-light { font-weight: $font-weight-light; }
+.font-weight-normal { font-weight: $font-weight-normal; }
+.font-weight-medium { font-weight: $font-weight-medium; }
+.font-weight-semibold { font-weight: $font-weight-semibold; }
+.font-weight-bold { font-weight: $font-weight-bold; }
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+.text-truncate { @include truncate; }
+
+// ----------------------------------------------------------------------------
+// Shadow Utility Classes
+// ----------------------------------------------------------------------------
+
+.shadow-none { box-shadow: none; }
+.shadow-sm { box-shadow: $shadow-sm; }
+.shadow-md { box-shadow: $shadow-md; }
+.shadow-lg { box-shadow: $shadow-lg; }
+.shadow-xl { box-shadow: $shadow-xl; }
+
+.elevation-1 { box-shadow: $elevation-1; }
+.elevation-2 { box-shadow: $elevation-2; }
+.elevation-3 { box-shadow: $elevation-3; }
+.elevation-4 { box-shadow: $elevation-4; }
+
+// ----------------------------------------------------------------------------
+// Border Radius Utility Classes
+// ----------------------------------------------------------------------------
+
+.rounded-none { border-radius: 0; }
+.rounded-sm { border-radius: $border-radius-sm; }
+.rounded-md { border-radius: $border-radius-md; }
+.rounded-lg { border-radius: $border-radius-lg; }
+.rounded-xl { border-radius: $border-radius-xl; }
+.rounded-full { border-radius: $border-radius-round; }
+
+// ----------------------------------------------------------------------------
+// Responsive Display Utilities
+// ----------------------------------------------------------------------------
+
+@include breakpoint-max-sm {
+  .hide-mobile { display: none; }
+}
+
+@include breakpoint-md {
+  .show-mobile { display: none; }
+}
+
+@include breakpoint-max-md {
+  .hide-tablet { display: none; }
+}
+
+@include breakpoint-lg {
+  .show-tablet { display: none; }
+}
+
+// ----------------------------------------------------------------------------
+// Card Component Theme
+// ----------------------------------------------------------------------------
+
+.card {
+  @include card-style;
+}
+
+.card-static {
+  @include card-style-static;
+}
+
+.card-border {
+  @include card-style-border;
+}
+
+// ----------------------------------------------------------------------------
+// Button Component Theme
+// ----------------------------------------------------------------------------
+
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-primary;
+}
+
+.btn-secondary {
+  @include button-secondary;
+}
+
+.btn-text {
+  @include button-text;
+}
+
+// ----------------------------------------------------------------------------
+// Container Classes
+// ----------------------------------------------------------------------------
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $spacing-md;
+  padding-right: $spacing-md;
+
+  @include breakpoint-md {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-left: $spacing-md;
+  padding-right: $spacing-md;
+
+  @include breakpoint-md {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+}
