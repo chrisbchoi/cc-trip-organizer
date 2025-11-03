@@ -1,0 +1,121 @@
+<div class="trip-list-container">
+  <!-- Header with title and create button -->
+  <div class="trip-list-header">
+    <h1>My Trips</h1>
+    <button 
+      type="button"
+      class="btn btn-primary"
+      (click)="onCreateTrip()"
+      aria-label="Create new trip">
+      <span aria-hidden="true">+</span> New Trip
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  @if (loading()) {
+    <div class="loading-container">
+      <app-loading-spinner message="Loading trips..."></app-loading-spinner>
+    </div>
+  }
+
+  <!-- Error state -->
+  @else if (error()) {
+    <div class="error-state" role="alert">
+      <h2>Error Loading Trips</h2>
+      <p>{{ error() }}</p>
+      <button 
+        type="button"
+        class="btn btn-secondary"
+        (click)="tripsStore.loadTrips()">
+        Try Again
+      </button>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @else if (trips().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon" aria-hidden="true">✈️</div>
+      <h2>No trips yet</h2>
+      <p>Start planning your next adventure by creating your first trip.</p>
+      <button 
+        type="button"
+        class="btn btn-primary"
+        (click)="onCreateTrip()">
+        Create Your First Trip
+      </button>
+    </div>
+  }
+
+  <!-- Trip list grid -->
+  @else {
+    <div 
+      class="trip-grid"
+      role="list"
+      aria-label="List of trips">
+      @for (trip of trips(); track trip.id) {
+        <article 
+          class="trip-card"
+          role="listitem"
+          (click)="onViewTrip(trip.id)"
+          (keydown.enter)="onViewTrip(trip.id)"
+          (keydown.space)="onViewTrip(trip.id)"
+          tabindex="0"
+          [attr.aria-label]="'Trip: ' + trip.title">
+          
+          <div class="trip-card-header">
+            <h3 class="trip-title">{{ trip.title }}</h3>
+            <button
+              type="button"
+              class="btn-icon delete-btn"
+              (click)="onDeleteTrip(trip.id, trip.title, $event)"
+              [attr.aria-label]="'Delete trip ' + trip.title"
+              title="Delete trip">
+              <span aria-hidden="true">🗑️</span>
+            </button>
+          </div>
+
+          <div class="trip-card-body">
+            <div class="trip-dates">
+              <div class="date-item">
+                <span class="date-label">Start:</span>
+                <span class="date-value">{{ trip.startDate | dateFormat:'medium' }}</span>
+              </div>
+              <div class="date-item">
+                <span class="date-label">End:</span>
+                <span class="date-value">{{ trip.endDate | dateFormat:'medium' }}</span>
+              </div>
+            </div>
+
+            @if (trip.description) {
+              <p class="trip-description">{{ trip.description }}</p>
+            }
+
+            <div class="trip-meta">
+              <span class="meta-item">
+                <span class="meta-icon" aria-hidden="true">📋</span>
+                <span class="meta-text">0 items</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="trip-card-footer">
+            <span class="view-link">View Details →</span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>
+
+<!-- Delete confirmation dialog -->
+<app-confirmation-dialog
+  [isOpen]="showDeleteConfirmation"
+  title="Delete Trip"
+  [message]="'Are you sure you want to delete &quot;' + tripNameToDelete + '&quot;? This action cannot be undone.'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [isDangerous]="true"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="onCancelDelete()">
+</app-confirmation-dialog>
