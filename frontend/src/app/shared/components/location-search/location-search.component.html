@@ -1,0 +1,75 @@
+<div class="location-search-container">
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Search for a location..."
+      class="search-input"
+      [class.disabled]="disabled"
+      (blur)="onBlur()"
+      (focus)="onFocus()"
+      [disabled]="disabled"
+      autocomplete="off"
+    />
+
+    @if (selectedLocation) {
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearSelection()"
+        [disabled]="disabled"
+        aria-label="Clear selection"
+      >
+        ×
+      </button>
+    }
+
+    @if (isLoading()) {
+      <div class="loading-indicator">
+        <div class="spinner"></div>
+      </div>
+    }
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-message">
+      <span class="error-icon">⚠</span>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
+  @if (showSuggestions() && suggestions().length > 0) {
+    <div class="suggestions-dropdown">
+      <ul class="suggestions-list">
+        @for (suggestion of suggestions(); track suggestion.placeId) {
+          <li
+            class="suggestion-item"
+            (click)="selectSuggestion(suggestion)"
+            tabindex="0"
+            role="button"
+          >
+            <div class="suggestion-main">
+              <span class="suggestion-address">
+                {{ getLocationDisplayText(suggestion) }}
+              </span>
+            </div>
+            @if (getLocationDetails(suggestion)) {
+              <div class="suggestion-details">
+                {{ getLocationDetails(suggestion) }}
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (showSuggestions() && suggestions().length === 0 && !isLoading() && searchControl.value && searchControl.value.length >= 3) {
+    <div class="suggestions-dropdown">
+      <div class="no-results">
+        <span class="no-results-icon">🔍</span>
+        <span>No locations found</span>
+      </div>
+    </div>
+  }
+</div>
