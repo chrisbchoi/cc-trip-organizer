@@ -1,0 +1,252 @@
+<!-- Trip Detail Page -->
+<div class="trip-detail-page">
+  <!-- Loading State -->
+  @if (loading && !trip) {
+    <div class="state-container loading-state">
+      <app-loading-spinner></app-loading-spinner>
+      <p class="state-message">Loading trip details...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error) {
+    <div class="state-container error-state">
+      <div class="error-icon" aria-hidden="true">⚠️</div>
+      <h2 class="error-title">Unable to Load Trip</h2>
+      <p class="error-message">{{ error }}</p>
+      <button type="button" class="btn btn-primary" (click)="onRetry()">
+        Retry
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onBackToTrips()">
+        Back to Trips
+      </button>
+    </div>
+  }
+
+  <!-- Trip Not Found (404) -->
+  @else if (tripNotFound) {
+    <div class="state-container not-found-state">
+      <div class="not-found-icon" aria-hidden="true">🔍</div>
+      <h2 class="not-found-title">Trip Not Found</h2>
+      <p class="not-found-message">
+        The trip you're looking for doesn't exist or has been deleted.
+      </p>
+      <button type="button" class="btn btn-primary" (click)="onBackToTrips()">
+        Back to Trips
+      </button>
+    </div>
+  }
+
+  <!-- Trip Content -->
+  @else if (trip) {
+    <div class="trip-detail-content">
+      <!-- Back Navigation -->
+      <button type="button" class="back-button" (click)="onBackToTrips()" aria-label="Back to trips">
+        <span class="back-icon" aria-hidden="true">←</span>
+        <span class="back-text">Back to Trips</span>
+      </button>
+
+      <!-- Trip Header -->
+      <header class="trip-header">
+        <div class="trip-header-content">
+          <h1 class="trip-title">{{ trip.title }}</h1>
+          
+          <div class="trip-meta">
+            <div class="trip-dates">
+              <span class="date-label">Dates:</span>
+              <span class="date-range">
+                {{ formatDate(trip.startDate) }} – {{ formatDate(trip.endDate) }}
+              </span>
+            </div>
+            
+            <div class="trip-duration">
+              <span class="duration-label">Duration:</span>
+              <span class="duration-value">{{ trip.getDuration() }} days</span>
+            </div>
+          </div>
+
+          @if (trip.description) {
+            <p class="trip-description">{{ trip.description }}</p>
+          }
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="trip-actions">
+          <button 
+            type="button" 
+            class="btn btn-secondary btn-large" 
+            (click)="onEditTrip()"
+            aria-label="Edit trip">
+            <span class="btn-icon" aria-hidden="true">✏️</span>
+            <span class="btn-text">Edit Trip</span>
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-primary btn-large" 
+            (click)="onAddItem()"
+            aria-label="Add itinerary item">
+            <span class="btn-icon" aria-hidden="true">➕</span>
+            <span class="btn-text">Add Item</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Itinerary Section -->
+      <section class="itinerary-section">
+        <h2 class="section-title">Itinerary</h2>
+
+        <!-- Loading Itinerary -->
+        @if (itineraryStore.loading()) {
+          <div class="itinerary-loading">
+            <app-loading-spinner></app-loading-spinner>
+            <p>Loading itinerary items...</p>
+          </div>
+        }
+
+        <!-- Empty Itinerary -->
+        @else if (!hasItems) {
+          <div class="empty-itinerary">
+            <div class="empty-icon" aria-hidden="true">📋</div>
+            <h3 class="empty-title">No Itinerary Items Yet</h3>
+            <p class="empty-message">
+              Start building your trip by adding flights, accommodations, and other travel segments.
+            </p>
+            <button 
+              type="button" 
+              class="btn btn-primary" 
+              (click)="onAddItem()">
+              Add First Item
+            </button>
+          </div>
+        }
+
+        <!-- Itinerary Items -->
+        @else {
+          <div class="itinerary-timeline">
+            @for (item of itineraryItems; track item.id) {
+              <div class="itinerary-item" [class.item-type-flight]="item.type === 'flight'"
+                   [class.item-type-transport]="item.type === 'transport'"
+                   [class.item-type-accommodation]="item.type === 'accommodation'">
+                
+                <!-- Item Type Badge -->
+                <div class="item-badge">
+                  @if (item.type === 'flight') {
+                    <span class="badge-icon" aria-hidden="true">✈️</span>
+                    <span class="badge-text">Flight</span>
+                  } @else if (item.type === 'transport') {
+                    <span class="badge-icon" aria-hidden="true">🚗</span>
+                    <span class="badge-text">Transport</span>
+                  } @else if (item.type === 'accommodation') {
+                    <span class="badge-icon" aria-hidden="true">🏨</span>
+                    <span class="badge-text">Accommodation</span>
+                  }
+                </div>
+
+                <!-- Item Content -->
+                <div class="item-content">
+                  <!-- Flight Details -->
+                  @if (item.type === 'flight') {
+                    <div class="item-header">
+                      <h3 class="item-title">
+                        {{ asFlight(item).departureLocation.address }} → {{ asFlight(item).arrivalLocation.address }}
+                      </h3>
+                      @if (asFlight(item).flightNumber) {
+                        <span class="item-subtitle">Flight {{ asFlight(item).flightNumber }}</span>
+                      }
+                    </div>
+                    <div class="item-details">
+                      <div class="detail-row">
+                        <span class="detail-label">Departure:</span>
+                        <span class="detail-value">{{ formatDate(item.startDate) }}</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-label">Arrival:</span>
+                        <span class="detail-value">{{ formatDate(item.endDate) }}</span>
+                      </div>
+                      @if (asFlight(item).airline) {
+                        <div class="detail-row">
+                          <span class="detail-label">Airline:</span>
+                          <span class="detail-value">{{ asFlight(item).airline }}</span>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <!-- Transport Details -->
+                  @else if (item.type === 'transport') {
+                    <div class="item-header">
+                      <h3 class="item-title">
+                        {{ asTransport(item).departureLocation.address }} → {{ asTransport(item).arrivalLocation.address }}
+                      </h3>
+                      @if (asTransport(item).transportType) {
+                        <span class="item-subtitle">{{ asTransport(item).transportType }}</span>
+                      }
+                    </div>
+                    <div class="item-details">
+                      <div class="detail-row">
+                        <span class="detail-label">Departure:</span>
+                        <span class="detail-value">{{ formatDate(item.startDate) }}</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-label">Arrival:</span>
+                        <span class="detail-value">{{ formatDate(item.endDate) }}</span>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- Accommodation Details -->
+                  @else if (item.type === 'accommodation') {
+                    <div class="item-header">
+                      <h3 class="item-title">{{ asAccommodation(item).name }}</h3>
+                      <span class="item-subtitle">{{ asAccommodation(item).location.address }}</span>
+                    </div>
+                    <div class="item-details">
+                      <div class="detail-row">
+                        <span class="detail-label">Check-in:</span>
+                        <span class="detail-value">{{ formatDate(item.startDate) }}</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-label">Check-out:</span>
+                        <span class="detail-value">{{ formatDate(item.endDate) }}</span>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- Item Actions -->
+                  <div class="item-actions">
+                    <button 
+                      type="button" 
+                      class="btn-icon-only" 
+                      (click)="onEditItem(item.id)"
+                      aria-label="Edit item">
+                      ✏️
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gap Indicator (if gaps exist, show between items) -->
+              @if ($index < itineraryItems.length - 1 && gaps.length > 0) {
+                @for (gap of gaps; track $index) {
+                  <div class="gap-indicator" role="alert">
+                    <div class="gap-icon" aria-hidden="true">⚠️</div>
+                    <div class="gap-content">
+                      <strong class="gap-title">Gap Detected</strong>
+                      <p class="gap-description">
+                        {{ gap.durationHours }} hour gap between {{ gap.startDateTime }} and {{ gap.endDateTime }}
+                        @if (gap.suggestion) {
+                          <br>Suggestion: Add {{ gap.suggestion }}
+                        }
+                      </p>
+                    </div>
+                  </div>
+                }
+              }
+            }
+          </div>
+        }
+      </section>
+    </div>
+  }
+</div>

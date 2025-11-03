@@ -1,0 +1,497 @@
+@use '../../../../../assets/styles/variables' as *;
+@use '../../../../../assets/styles/mixins' as *;
+
+.trip-detail-page {
+  min-height: 100vh;
+  background-color: $color-background;
+  padding: $spacing-xl $spacing-lg;
+
+  @media (max-width: 768px) {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  @media (max-width: 480px) {
+    padding: $spacing-md $spacing-sm;
+  }
+}
+
+// State containers (loading, error, not found)
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: $spacing-xl;
+  text-align: center;
+
+  .state-message {
+    margin-top: $spacing-md;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+}
+
+.loading-state {
+  gap: $spacing-md;
+}
+
+.error-state {
+  background-color: rgba($color-warn, 0.1);
+  border-radius: $border-radius-md;
+  padding: $spacing-xl;
+
+  .error-icon {
+    font-size: 64px;
+    margin-bottom: $spacing-md;
+  }
+
+  .error-title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  .error-message {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+
+  .btn {
+    margin: $spacing-xs $spacing-sm;
+  }
+}
+
+.not-found-state {
+  .not-found-icon {
+    font-size: 64px;
+    margin-bottom: $spacing-md;
+  }
+
+  .not-found-title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  .not-found-message {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    max-width: 500px;
+  }
+}
+
+// Trip content
+.trip-detail-content {
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+// Back button
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-lg;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  background: none;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: color $transition-duration-fast ease,
+    background-color $transition-duration-fast ease;
+
+  &:hover {
+    color: $color-text-primary;
+    background-color: rgba($color-primary, 0.1);
+  }
+
+  .back-icon {
+    font-size: $font-size-lg;
+  }
+
+  .back-text {
+    font-weight: $font-weight-medium;
+  }
+}
+
+// Trip header
+.trip-header {
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-xl;
+  box-shadow: $shadow-sm;
+  border: 1px solid $color-border;
+
+  @media (max-width: 768px) {
+    padding: $spacing-lg;
+  }
+}
+
+.trip-header-content {
+  margin-bottom: $spacing-lg;
+}
+
+.trip-title {
+  margin: 0 0 $spacing-md 0;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+
+  @media (max-width: 768px) {
+    font-size: $font-size-xl;
+  }
+}
+
+.trip-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+.trip-dates,
+.trip-duration {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.date-label,
+.duration-label {
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
+}
+
+.date-range,
+.duration-value {
+  color: $color-text-primary;
+}
+
+.trip-description {
+  margin: 0;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $color-text-secondary;
+  white-space: pre-wrap;
+}
+
+.trip-actions {
+  display: flex;
+  gap: $spacing-md;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $color-border;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+
+// Buttons
+.btn {
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background-color $transition-duration-fast ease,
+    transform $transition-duration-fast ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.btn-primary {
+  background-color: $color-primary;
+  color: $color-primary-contrast;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+  }
+}
+
+.btn-secondary {
+  background-color: $color-surface;
+  color: $color-text-primary;
+  border: 1px solid $color-border;
+
+  &:hover:not(:disabled) {
+    background-color: $color-background-dark;
+  }
+}
+
+.btn-large {
+  padding: $spacing-md $spacing-xl;
+  font-size: $font-size-base;
+
+  .btn-icon {
+    font-size: $font-size-lg;
+  }
+}
+
+.btn-icon-only {
+  padding: $spacing-xs $spacing-sm;
+  background: none;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-size: $font-size-lg;
+  transition: background-color $transition-duration-fast ease,
+    border-color $transition-duration-fast ease;
+
+  &:hover {
+    background-color: rgba($color-primary, 0.1);
+    border-color: $color-primary;
+  }
+}
+
+// Itinerary section
+.itinerary-section {
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  padding: $spacing-xl;
+  box-shadow: $shadow-sm;
+  border: 1px solid $color-border;
+
+  @media (max-width: 768px) {
+    padding: $spacing-lg;
+  }
+}
+
+.section-title {
+  margin: 0 0 $spacing-lg 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.itinerary-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  gap: $spacing-md;
+  color: $color-text-secondary;
+}
+
+// Empty itinerary state
+.empty-itinerary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: $spacing-xl;
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: $spacing-md;
+  }
+
+  .empty-title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  .empty-message {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    max-width: 500px;
+  }
+}
+
+// Itinerary timeline
+.itinerary-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+// Itinerary item
+.itinerary-item {
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  border-left: 4px solid $color-border;
+  transition: box-shadow $transition-duration-fast ease,
+    transform $transition-duration-fast ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateX(4px);
+  }
+
+  // Type-specific colors
+  &.item-type-flight {
+    border-left-color: #3b82f6; // Blue
+  }
+
+  &.item-type-transport {
+    border-left-color: #10b981; // Green
+  }
+
+  &.item-type-accommodation {
+    border-left-color: #f59e0b; // Orange
+  }
+}
+
+.item-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-sm;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  border-radius: $border-radius-sm;
+  background-color: rgba($color-primary, 0.1);
+  color: $color-primary;
+
+  .badge-icon {
+    font-size: $font-size-base;
+  }
+}
+
+.item-content {
+  display: flex;
+  gap: $spacing-lg;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.item-header {
+  flex: 1;
+  min-width: 0; // Allow text truncation
+}
+
+.item-title {
+  margin: 0 0 $spacing-xs 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.item-subtitle {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: $spacing-xs;
+}
+
+.item-details {
+  margin-top: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.detail-row {
+  display: flex;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+}
+
+.detail-label {
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
+  min-width: 100px;
+}
+
+.detail-value {
+  color: $color-text-primary;
+}
+
+.item-actions {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+// Gap indicator
+.gap-indicator {
+  background-color: rgba($color-warn, 0.1);
+  border-left: 4px solid $color-warn;
+  border-radius: $border-radius-sm;
+  padding: $spacing-md;
+  margin: $spacing-sm 0;
+  display: flex;
+  gap: $spacing-md;
+  align-items: flex-start;
+
+  .gap-icon {
+    font-size: $font-size-lg;
+    flex-shrink: 0;
+  }
+
+  .gap-content {
+    flex: 1;
+  }
+
+  .gap-title {
+    display: block;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  .gap-description {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+// Print styles
+@media print {
+  .back-button,
+  .trip-actions,
+  .item-actions {
+    display: none;
+  }
+
+  .trip-detail-page {
+    background-color: white;
+    padding: 0;
+  }
+
+  .trip-header,
+  .itinerary-section {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
