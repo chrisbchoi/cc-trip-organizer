@@ -1,0 +1,246 @@
+<div class="accommodation-form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>{{ accommodation ? 'Edit' : 'Add' }} Accommodation</h2>
+    </div>
+
+    <form [formGroup]="accommodationForm" (ngSubmit)="onSubmit()" class="accommodation-form">
+      <!-- Title -->
+      <div class="form-row">
+        <div class="form-field full-width">
+          <label for="title">Title <span class="required">*</span></label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            placeholder="e.g., Hotel Grand Budapest"
+            [class.error]="hasError('title', 'required') || hasError('title', 'minlength')"
+          />
+          @if (hasError('title', 'required') || hasError('title', 'minlength')) {
+            <span class="error-message">{{ getErrorMessage('title') }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Accommodation Name -->
+      <div class="form-row">
+        <div class="form-field full-width">
+          <label for="name">Accommodation Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="e.g., Hilton Garden Inn"
+            [class.error]="hasError('name', 'required') || hasError('name', 'minlength')"
+          />
+          @if (hasError('name', 'required') || hasError('name', 'minlength')) {
+            <span class="error-message">{{ getErrorMessage('name') }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Confirmation Number and Phone Number -->
+      <div class="form-row">
+        <div class="form-field">
+          <label for="confirmationNumber">Confirmation Number</label>
+          <input
+            type="text"
+            id="confirmationNumber"
+            formControlName="confirmationNumber"
+            placeholder="e.g., ABC123456"
+          />
+        </div>
+        <div class="form-field">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            placeholder="e.g., +1 (555) 123-4567"
+          />
+        </div>
+      </div>
+
+      <!-- Check-in Section -->
+      <fieldset class="form-section">
+        <legend>Check-in</legend>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="checkInDate">Date <span class="required">*</span></label>
+            <input
+              type="date"
+              id="checkInDate"
+              formControlName="checkInDate"
+              (change)="updateCheckInSignal()"
+              [class.error]="hasError('checkInDate', 'required')"
+            />
+            @if (hasError('checkInDate', 'required')) {
+              <span class="error-message">{{ getErrorMessage('checkInDate') }}</span>
+            }
+          </div>
+          <div class="form-field">
+            <label for="checkInTime">Time <span class="required">*</span></label>
+            <input
+              type="time"
+              id="checkInTime"
+              formControlName="checkInTime"
+              (change)="updateCheckInSignal()"
+              [class.error]="hasError('checkInTime', 'required')"
+            />
+            @if (hasError('checkInTime', 'required')) {
+              <span class="error-message">{{ getErrorMessage('checkInTime') }}</span>
+            }
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Check-out Section -->
+      <fieldset class="form-section">
+        <legend>Check-out</legend>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="checkOutDate">Date <span class="required">*</span></label>
+            <input
+              type="date"
+              id="checkOutDate"
+              formControlName="checkOutDate"
+              (change)="updateCheckOutSignal()"
+              [class.error]="hasError('checkOutDate', 'required')"
+            />
+            @if (hasError('checkOutDate', 'required')) {
+              <span class="error-message">{{ getErrorMessage('checkOutDate') }}</span>
+            }
+          </div>
+          <div class="form-field">
+            <label for="checkOutTime">Time <span class="required">*</span></label>
+            <input
+              type="time"
+              id="checkOutTime"
+              formControlName="checkOutTime"
+              (change)="updateCheckOutSignal()"
+              [class.error]="hasError('checkOutTime', 'required')"
+            />
+            @if (hasError('checkOutTime', 'required')) {
+              <span class="error-message">{{ getErrorMessage('checkOutTime') }}</span>
+            }
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Duration Display -->
+      @if (formattedDuration()) {
+        <div class="duration-display">
+          <span class="duration-label">Duration:</span>
+          <span class="duration-value">{{ formattedDuration() }}</span>
+        </div>
+      }
+
+      <!-- Date/Time Error -->
+      @if (hasDateTimeError()) {
+        <div class="date-time-error">
+          <span class="error-message">Check-out time must be after check-in time</span>
+        </div>
+      }
+
+      <!-- Location Section -->
+      <fieldset class="form-section">
+        <legend>Location</legend>
+
+        <div class="form-row">
+          <div class="form-field full-width">
+            <label for="address">Address <span class="required">*</span></label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              placeholder="e.g., 123 Main St, New York, NY 10001"
+              [class.error]="hasError('address', 'required')"
+            />
+            @if (hasError('address', 'required')) {
+              <span class="error-message">{{ getErrorMessage('address') }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="latitude">Latitude</label>
+            <input
+              type="number"
+              id="latitude"
+              formControlName="latitude"
+              placeholder="e.g., 40.7128"
+              step="0.000001"
+              [class.error]="hasError('latitude', 'min') || hasError('latitude', 'max')"
+            />
+            @if (hasError('latitude', 'min') || hasError('latitude', 'max')) {
+              <span class="error-message">{{ getErrorMessage('latitude') }}</span>
+            }
+          </div>
+          <div class="form-field">
+            <label for="longitude">Longitude</label>
+            <input
+              type="number"
+              id="longitude"
+              formControlName="longitude"
+              placeholder="e.g., -74.0060"
+              step="0.000001"
+              [class.error]="hasError('longitude', 'min') || hasError('longitude', 'max')"
+            />
+            @if (hasError('longitude', 'min') || hasError('longitude', 'max')) {
+              <span class="error-message">{{ getErrorMessage('longitude') }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="city">City</label>
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              placeholder="e.g., New York"
+            />
+          </div>
+          <div class="form-field">
+            <label for="country">Country</label>
+            <input
+              type="text"
+              id="country"
+              formControlName="country"
+              placeholder="e.g., USA"
+            />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Notes Section -->
+      <div class="form-row">
+        <div class="form-field full-width">
+          <label for="notes">Notes</label>
+          <textarea
+            id="notes"
+            formControlName="notes"
+            rows="4"
+            placeholder="Add any additional notes or details about this accommodation..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="accommodationForm.invalid || hasDateTimeError()"
+        >
+          {{ accommodation ? 'Update' : 'Add' }} Accommodation
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
