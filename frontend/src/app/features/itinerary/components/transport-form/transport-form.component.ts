@@ -12,10 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Transport, TransportType } from '../../../../core/models/transport.model';
 import { Location } from '../../../../core/models/location.model';
-import {
-  calculateDuration,
-  formatDuration,
-} from '../../../../core/utils/date.utils';
+import { calculateDuration, formatDuration } from '../../../../core/utils/date.utils';
 
 /**
  * TransportFormComponent
