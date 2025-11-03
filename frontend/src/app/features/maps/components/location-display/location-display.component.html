@@ -1,0 +1,42 @@
+<!-- Location Display Component -->
+<div class="location-display" [class.has-map-link]="showMapLink && isLocationValid">
+  @if (location) {
+    <div class="location-content">
+      <- Backend builds Location Icon -->
+      <div class="location-icon" aria-hidden="true">
+        📍
+      </div>
+
+      <- Backend builds Location Text -->
+      <div class="location-text">
+        <div class="location-primary">
+          {{ displayText }}
+        </div>
+        @if (cityCountryText && displayText !== cityCountryText) {
+          <div class="location-secondary">
+            {{ cityCountryText }}
+          </div>
+        }
+      </div>
+
+      <- Backend builds Map Link Button -->
+      @if (showMapLink && isLocationValid) {
+        <button
+          type="button"
+          class="map-link-btn"
+          (click)="openInMaps()"
+          [attr.aria-label]="'View ' + (label || displayText) + ' on Google Maps'"
+          title="View on Google Maps">
+          <span class="map-icon" aria-hidden="true">🗺️</span>
+          <span class="map-text">View Map</span>
+        </button>
+      }
+    </div>
+  } @else {
+    <- Backend builds No Location State -->
+    <div class="location-empty">
+      <span class="empty-icon" aria-hidden="true">📍</span>
+      <span class="empty-text">No location available</span>
+    </div>
+  }
+</div>
