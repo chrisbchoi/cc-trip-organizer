@@ -1,0 +1,72 @@
+<div class="date-time-picker-container">
+  @if (label) {
+    <label class="main-label">
+      {{ label }}
+      @if (required) {
+        <span class="required-indicator" aria-label="required">*</span>
+      }
+    </label>
+  }
+
+  <div class="inputs-wrapper">
+    <div class="input-group date-input-group">
+      <label [for]="'date-input-' + label" class="input-label">
+        {{ dateLabel }}
+        @if (required) {
+          <span class="required-indicator" aria-label="required">*</span>
+        }
+      </label>
+      <input
+        [id]="'date-input-' + label"
+        type="date"
+        [formControl]="dateControl"
+        (change)="onDateChange()"
+        (blur)="onTouched()"
+        [min]="minDate"
+        [max]="maxDate"
+        [required]="required"
+        [disabled]="disabled"
+        class="date-input"
+        [class.has-value]="hasDateValue()"
+        [attr.aria-label]="dateLabel"
+        [attr.aria-required]="required"
+      />
+    </div>
+
+    <div class="input-group time-input-group">
+      <label [for]="'time-input-' + label" class="input-label">
+        {{ timeLabel }}
+        @if (required) {
+          <span class="required-indicator" aria-label="required">*</span>
+        }
+      </label>
+      <input
+        [id]="'time-input-' + label"
+        type="time"
+        [formControl]="timeControl"
+        (change)="onTimeChange()"
+        (blur)="onTouched()"
+        [min]="minTime"
+        [max]="maxTime"
+        [required]="required"
+        [disabled]="disabled"
+        class="time-input"
+        [class.has-value]="hasTimeValue()"
+        [attr.aria-label]="timeLabel"
+        [attr.aria-required]="required"
+      />
+    </div>
+  </div>
+
+  @if (hasDateValue() || hasTimeValue()) {
+    <button
+      type="button"
+      class="clear-button"
+      (click)="clear()"
+      [disabled]="disabled"
+      aria-label="Clear date and time"
+    >
+      Clear
+    </button>
+  }
+</div>

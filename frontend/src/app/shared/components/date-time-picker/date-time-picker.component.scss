@@ -1,0 +1,255 @@
+@use '../../../../assets/styles/variables' as *;
+
+.date-time-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  .main-label {
+    font-weight: 600;
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    display: block;
+
+    .required-indicator {
+      color: $color-warn;
+      margin-left: 0.25rem;
+    }
+  }
+
+  .inputs-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+
+    .input-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .input-label {
+        font-weight: 500;
+        font-size: $font-size-sm;
+        color: $color-text-primary;
+        display: block;
+
+        .required-indicator {
+          color: $color-warn;
+          margin-left: 0.25rem;
+        }
+      }
+
+      .date-input,
+      .time-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid $color-border;
+        border-radius: 4px;
+        font-size: $font-size-base;
+        font-family: inherit;
+        transition: all 0.2s ease;
+        background-color: white;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+        }
+
+        &:disabled {
+          background-color: $color-surface;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        &.has-value {
+          border-color: $color-success;
+        }
+
+        // Remove default browser styling
+        &::-webkit-calendar-picker-indicator {
+          cursor: pointer;
+          padding: 0.25rem;
+          border-radius: 4px;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: rgba($color-primary, 0.1);
+          }
+        }
+
+        &::-webkit-datetime-edit-fields-wrapper {
+          padding: 0;
+        }
+
+        &::-webkit-datetime-edit-text {
+          padding: 0 0.25rem;
+        }
+
+        &::-webkit-datetime-edit-month-field,
+        &::-webkit-datetime-edit-day-field,
+        &::-webkit-datetime-edit-year-field,
+        &::-webkit-datetime-edit-hour-field,
+        &::-webkit-datetime-edit-minute-field,
+        &::-webkit-datetime-edit-ampm-field {
+          padding: 0.125rem 0.25rem;
+          border-radius: 2px;
+
+          &:focus {
+            background-color: rgba($color-primary, 0.1);
+            color: $color-primary;
+          }
+        }
+      }
+
+      .date-input {
+        min-width: 150px;
+      }
+
+      .time-input {
+        min-width: 120px;
+      }
+    }
+  }
+
+  .clear-button {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background-color: $color-surface;
+    border: 2px solid $color-border;
+    border-radius: 4px;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: rgba($color-warn, 0.1);
+      border-color: $color-warn;
+      color: $color-warn;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .date-time-picker-container {
+    .inputs-wrapper {
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .input-group {
+        width: 100%;
+
+        .date-input,
+        .time-input {
+          min-width: 100%;
+        }
+      }
+    }
+
+    .clear-button {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .date-time-picker-container {
+    .inputs-wrapper {
+      .input-group {
+        .date-input,
+        .time-input {
+          padding: 0.625rem;
+          font-size: $font-size-sm;
+        }
+      }
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .date-time-picker-container {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+// High Contrast Mode
+@media (prefers-contrast: high) {
+  .date-time-picker-container {
+    .inputs-wrapper {
+      .input-group {
+        .date-input,
+        .time-input {
+          border-width: 3px;
+        }
+      }
+    }
+
+    .clear-button {
+      border-width: 3px;
+    }
+  }
+}
+
+// Print Styles
+@media print {
+  .date-time-picker-container {
+    .clear-button {
+      display: none;
+    }
+
+    .inputs-wrapper {
+      .input-group {
+        .date-input,
+        .time-input {
+          border: 1px solid $color-text-secondary;
+
+          &::-webkit-calendar-picker-indicator {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support (if implemented)
+@media (prefers-color-scheme: dark) {
+  .date-time-picker-container {
+    .inputs-wrapper {
+      .input-group {
+        .date-input,
+        .time-input {
+          background-color: #1e1e1e;
+          color: #e0e0e0;
+          border-color: #424242;
+
+          &:focus {
+            border-color: $color-primary;
+          }
+
+          &:disabled {
+            background-color: #2a2a2a;
+          }
+        }
+      }
+    }
+  }
+}
