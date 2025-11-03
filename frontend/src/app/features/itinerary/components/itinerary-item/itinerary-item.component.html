@@ -1,0 +1,146 @@
+<div class="itinerary-item" [ngClass]="getItemTypeClass()">
+  <!-- Item Header -->
+  <div class="item-header">
+    <div class="item-type-badge">
+      <span class="type-icon">{{ getItemIcon() }}</span>
+      <span class="type-label">{{ getItemTypeLabel() }}</span>
+    </div>
+    <div class="item-actions">
+      <button
+        type="button"
+        class="action-btn edit-btn"
+        (click)="onEdit()"
+        [attr.aria-label]="'Edit ' + getItemTypeLabel()"
+        title="Edit">
+        ✏️
+      </button>
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="onDelete()"
+        [attr.aria-label]="'Delete ' + getItemTypeLabel()"
+        title="Delete">
+        🗑️
+      </button>
+    </div>
+  </div>
+
+  <!-- Flight Details -->
+  <div class="item-content" *ngIf="isFlight(item)">
+    <div class="flight-details">
+      <div class="flight-header">
+        <h3 class="item-title">
+          <span *ngIf="asFlight(item).airline">{{ asFlight(item).airline }}</span>
+          <span *ngIf="asFlight(item).flightNumber" class="flight-number">
+            {{ asFlight(item).flightNumber }}
+          </span>
+          <span *ngIf="!asFlight(item).airline && !asFlight(item).flightNumber">
+            Flight
+          </span>
+        </h3>
+        <div class="duration">
+          ⏱️ {{ formatDuration(asFlight(item).getDuration()) }}
+        </div>
+      </div>
+
+      <div class="flight-route">
+        <div class="route-point departure">
+          <div class="point-label">{{ getDepartureLabel() }}</div>
+          <div class="point-location">{{ formatLocation(asFlight(item).departureLocation) }}</div>
+          <div class="point-time">{{ formatDateTime(asFlight(item).startDate) }}</div>
+        </div>
+
+        <div class="route-arrow">→</div>
+
+        <div class="route-point arrival">
+          <div class="point-label">{{ getArrivalLabel() }}</div>
+          <div class="point-location">{{ formatLocation(asFlight(item).arrivalLocation) }}</div>
+          <div class="point-time">{{ formatDateTime(asFlight(item).endDate) }}</div>
+        </div>
+      </div>
+
+      <div class="additional-info" *ngIf="asFlight(item).confirmationCode">
+        <span class="info-label">Confirmation:</span>
+        <span class="info-value">{{ asFlight(item).confirmationCode }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transport Details -->
+  <div class="item-content" *ngIf="isTransport(item)">
+    <div class="transport-details">
+      <div class="transport-header">
+        <h3 class="item-title">
+          {{ asTransport(item).transportType }}
+          <span *ngIf="asTransport(item).provider" class="provider">
+            ({{ asTransport(item).provider }})
+          </span>
+        </h3>
+        <div class="duration">
+          ⏱️ {{ formatDuration(asTransport(item).getDuration()) }}
+        </div>
+      </div>
+
+      <div class="transport-route">
+        <div class="route-point departure">
+          <div class="point-label">{{ getDepartureLabel() }}</div>
+          <div class="point-location">{{ formatLocation(asTransport(item).departureLocation) }}</div>
+          <div class="point-time">{{ formatDateTime(asTransport(item).startDate) }}</div>
+        </div>
+
+        <div class="route-arrow">→</div>
+
+        <div class="route-point arrival">
+          <div class="point-label">{{ getArrivalLabel() }}</div>
+          <div class="point-location">{{ formatLocation(asTransport(item).arrivalLocation) }}</div>
+          <div class="point-time">{{ formatDateTime(asTransport(item).endDate) }}</div>
+        </div>
+      </div>
+
+      <div class="additional-info" *ngIf="asTransport(item).confirmationCode">
+        <span class="info-label">Confirmation:</span>
+        <span class="info-value">{{ asTransport(item).confirmationCode }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accommodation Details -->
+  <div class="item-content" *ngIf="isAccommodation(item)">
+    <div class="accommodation-details">
+      <div class="accommodation-header">
+        <h3 class="item-title">{{ asAccommodation(item).name }}</h3>
+        <div class="duration">
+          ⏱️ {{ formatDuration(asAccommodation(item).getDuration()) }}
+        </div>
+      </div>
+
+      <div class="accommodation-info">
+        <div class="info-row">
+          <div class="info-column">
+            <div class="info-label">{{ getDepartureLabel() }}</div>
+            <div class="info-value">{{ formatDateTime(asAccommodation(item).startDate) }}</div>
+          </div>
+          <div class="info-column">
+            <div class="info-label">{{ getArrivalLabel() }}</div>
+            <div class="info-value">{{ formatDateTime(asAccommodation(item).endDate) }}</div>
+          </div>
+        </div>
+
+        <div class="info-row location-row">
+          <div class="info-label">📍 Location</div>
+          <div class="info-value">{{ asAccommodation(item).location.address }}</div>
+        </div>
+
+        <div class="info-row" *ngIf="asAccommodation(item).phoneNumber">
+          <div class="info-label">📞 Phone</div>
+          <div class="info-value">{{ asAccommodation(item).phoneNumber }}</div>
+        </div>
+
+        <div class="info-row" *ngIf="asAccommodation(item).confirmationNumber">
+          <div class="info-label">Confirmation</div>
+          <div class="info-value">{{ asAccommodation(item).confirmationNumber }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

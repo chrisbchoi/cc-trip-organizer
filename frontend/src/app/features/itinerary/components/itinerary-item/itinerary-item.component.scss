@@ -1,0 +1,359 @@
+@use '../../../../../assets/styles/variables' as *;
+@use '../../../../../assets/styles/mixins' as *;
+
+.itinerary-item {
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  border-left: 4px solid $color-border;
+  padding: $spacing-md;
+  box-shadow: $shadow-sm;
+  transition: all $transition-duration-fast ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  // Type-specific border colors
+  &.item-type-flight {
+    border-left-color: $color-flight;
+  }
+
+  &.item-type-transport {
+    border-left-color: $color-transport;
+  }
+
+  &.item-type-accommodation {
+    border-left-color: $color-accommodation;
+  }
+}
+
+// Item Header
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1px solid $color-border;
+}
+
+.item-type-badge {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  .type-icon {
+    font-size: 20px;
+  }
+
+  .type-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.item-actions {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: $spacing-xs;
+  border-radius: $border-radius-sm;
+  transition: all $transition-duration-fast ease;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+    background-color: $color-background;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.delete-btn {
+  &:hover {
+    background-color: rgba(#e74c3c, 0.1);
+  }
+}
+
+// Item Content
+.item-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.item-title {
+  margin: 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+// Flight Specific Styles
+.flight-details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.flight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+
+  .flight-number {
+    font-weight: $font-weight-normal;
+    color: $color-text-secondary;
+  }
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.flight-route,
+.transport-route {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-background;
+  border-radius: $border-radius-sm;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.route-point {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &.departure {
+    text-align: left;
+  }
+
+  &.arrival {
+    text-align: right;
+
+    @media (max-width: 768px) {
+      text-align: left;
+    }
+  }
+
+  .point-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-hint;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .point-location {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  .point-time {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.route-arrow {
+  font-size: 24px;
+  color: $color-primary;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+}
+
+.additional-info {
+  display: flex;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+  padding: $spacing-sm;
+  background-color: $color-background;
+  border-radius: $border-radius-sm;
+
+  .info-label {
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+  }
+
+  .info-value {
+    color: $color-text-primary;
+  }
+}
+
+// Transport Specific Styles
+.transport-details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.transport-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+
+  .provider {
+    font-weight: $font-weight-normal;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+}
+
+// Accommodation Specific Styles
+.accommodation-details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.accommodation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.accommodation-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.info-row {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-sm;
+  background-color: $color-background;
+  border-radius: $border-radius-sm;
+
+  &.location-row {
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  .info-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    min-width: 100px;
+  }
+
+  .info-value {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    .info-label {
+      min-width: auto;
+    }
+  }
+}
+
+.info-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  .info-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-hint;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: auto;
+  }
+
+  .info-value {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .itinerary-item {
+    padding: $spacing-sm;
+  }
+
+  .item-title {
+    font-size: $font-size-base;
+  }
+
+  .flight-route,
+  .transport-route {
+    padding: $spacing-sm;
+  }
+
+  .route-point {
+    .point-location {
+      font-size: $font-size-sm;
+    }
+
+    .point-time {
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .itinerary-item {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .item-actions {
+    display: none;
+  }
+}
