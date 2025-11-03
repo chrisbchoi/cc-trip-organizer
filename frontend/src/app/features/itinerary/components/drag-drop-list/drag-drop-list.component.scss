@@ -1,0 +1,271 @@
+@use '../../../../../assets/styles/variables' as *;
+
+.drag-drop-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100px;
+  position: relative;
+
+  &.is-dragging {
+    cursor: grabbing;
+  }
+}
+
+.drag-item-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  position: relative;
+  background: $color-surface;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: grab;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+    opacity: 0.5;
+  }
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+// Drag Handle
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-height: 100%;
+  background: $color-border;
+  border-radius: 8px 0 0 8px;
+  cursor: grab;
+  transition: background-color 0.2s;
+  user-select: none;
+
+  &:hover {
+    background: darken($color-border, 5%);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .drag-icon {
+    font-size: $font-size-lg;
+    color: $color-text-secondary;
+    transform: rotate(90deg);
+    font-weight: bold;
+  }
+}
+
+// Item Content
+.item-content {
+  flex: 1;
+  min-width: 0; // Allow flexbox to shrink
+  padding: 0.5rem;
+}
+
+// Drag Placeholder
+.drag-placeholder {
+  background: $color-surface;
+  border: 2px dashed $color-primary;
+  border-radius: 8px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+
+  .placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: $color-text-secondary;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+  }
+
+  .placeholder-text {
+    font-size: $font-size-sm;
+    font-weight: 500;
+  }
+}
+
+// Drag Preview
+.drag-preview {
+  background: $color-surface;
+  border: 2px solid $color-primary;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 200px;
+  opacity: 0.9;
+
+  .preview-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .preview-icon {
+    font-size: 1.5rem;
+  }
+
+  .preview-label {
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: $color-text-primary;
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: $color-text-secondary;
+
+  p {
+    font-size: $font-size-lg;
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+  }
+
+  small {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+// CDK Drop List States
+.cdk-drop-list-dragging .drag-item-wrapper:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .drag-handle {
+    width: 32px;
+  }
+
+  .drag-icon {
+    font-size: $font-size-md;
+  }
+
+  .item-content {
+    padding: 0.25rem;
+  }
+
+  .drag-placeholder {
+    min-height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drag-drop-container {
+    gap: 0.75rem;
+  }
+
+  .drag-handle {
+    width: 28px;
+  }
+
+  .empty-state {
+    padding: 2rem 0.5rem;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .drag-item-wrapper,
+  .cdk-drag-animating,
+  .cdk-drop-list-dragging .drag-item-wrapper {
+    transition: none;
+  }
+}
+
+// High Contrast Mode
+@media (prefers-contrast: high) {
+  .drag-handle {
+    border: 2px solid $color-text-primary;
+  }
+
+  .drag-placeholder {
+    border-width: 3px;
+  }
+
+  .drag-preview {
+    border-width: 3px;
+  }
+}
+
+// Dark Mode Support
+@media (prefers-color-scheme: dark) {
+  .drag-handle {
+    background: #2a2a2a;
+
+    &:hover {
+      background: #333333;
+    }
+
+    .drag-icon {
+      color: #b0b0b0;
+    }
+  }
+
+  .drag-placeholder {
+    background: #1e1e1e;
+    border-color: #4a9eff;
+  }
+
+  .drag-preview {
+    background: #2a2a2a;
+    border-color: #4a9eff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .empty-state {
+    color: #b0b0b0;
+  }
+}
+
+// Print Styles
+@media print {
+  .drag-handle {
+    display: none;
+  }
+
+  .drag-item-wrapper {
+    cursor: default;
+    box-shadow: none;
+  }
+
+  .item-content {
+    padding-left: 0;
+  }
+}
+
+// Touch Device Optimizations
+@media (hover: none) and (pointer: coarse) {
+  .drag-handle {
+    width: 48px; // Larger touch target
+  }
+
+  .drag-item-wrapper {
+    &:hover {
+      box-shadow: none; // No hover on touch devices
+    }
+  }
+}

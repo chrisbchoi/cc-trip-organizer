@@ -1,0 +1,54 @@
+<div 
+  class="drag-drop-container"
+  cdkDropList
+  [cdkDropListDisabled]="disabled"
+  (cdkDropListDropped)="onDrop($event)"
+  [class.is-dragging]="isDragging()"
+>
+  @for (item of items$(); track trackByItemId($index, item)) {
+    <div
+      class="drag-item-wrapper"
+      cdkDrag
+      [cdkDragDisabled]="disabled"
+      (cdkDragStarted)="onDragStarted(item)"
+      (cdkDragEnded)="onDragEnded()"
+      [class.is-dragging]="isItemDragging(item.id)"
+    >
+      <!-- Drag Handle -->
+      <div class="drag-handle" cdkDragHandle [attr.aria-label]="'Drag to reorder ' + item.type">
+        <span class="drag-icon">⋮⋮</span>
+      </div>
+
+      <!-- Itinerary Item Content -->
+      <div class="item-content">
+        <app-itinerary-item
+          [item]="item"
+          (itemClick)="onItemClick(item)"
+          (editItem)="onItemEdit(item)"
+          (deleteItem)="onItemDelete(item)"
+        />
+      </div>
+
+      <!-- Drag Placeholder (shown while dragging) -->
+      <div class="drag-placeholder" *cdkDragPlaceholder>
+        <div class="placeholder-content">
+          <span class="placeholder-icon">{{ item.type === 'flight' ? '✈️' : item.type === 'transport' ? '🚗' : '🏨' }}</span>
+          <span class="placeholder-text">Drop here to reorder</span>
+        </div>
+      </div>
+
+      <!-- Drag Preview (shown while dragging) -->
+      <div class="drag-preview" *cdkDragPreview>
+        <div class="preview-content">
+          <span class="preview-icon">{{ item.type === 'flight' ? '✈️' : item.type === 'transport' ? '🚗' : '🏨' }}</span>
+          <span class="preview-label">{{ item.type | titlecase }}</span>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">
+      <p>No itinerary items yet</p>
+      <small>Add flights, transportation, or accommodations to get started</small>
+    </div>
+  }
+</div>
