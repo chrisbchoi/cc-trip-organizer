@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Trip } from '../../../core/models/trip.model';
-import { environment } from '../../../../environments/environment';
+import { ApiService } from '../../../core/services/api.service';
 
 interface TripResponse {
   id: string;
@@ -17,21 +16,21 @@ interface TripResponse {
 
 /**
  * Service for making API calls related to trips
+ * Uses the base ApiService for HTTP operations
  */
 @Injectable({
   providedIn: 'root',
 })
 export class TripsApiService {
-  private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/trips`;
+  private api = inject(ApiService);
 
   /**
    * Get all trips
    * @returns Observable of Trip array
    */
   getTrips(): Observable<Trip[]> {
-    return this.http
-      .get<TripResponse[]>(this.apiUrl)
+    return this.api
+      .get<TripResponse[]>('trips')
       .pipe(map((trips) => trips.map((trip) => new Trip(trip as unknown as Partial<Trip>))));
   }
 
@@ -41,8 +40,8 @@ export class TripsApiService {
    * @returns Observable of Trip
    */
   getTrip(id: string): Observable<Trip> {
-    return this.http
-      .get<TripResponse>(`${this.apiUrl}/${id}`)
+    return this.api
+      .get<TripResponse>(`trips/${id}`)
       .pipe(map((trip) => new Trip(trip as unknown as Partial<Trip>)));
   }
 
@@ -52,8 +51,8 @@ export class TripsApiService {
    * @returns Observable of created Trip
    */
   createTrip(trip: Partial<Trip>): Observable<Trip> {
-    return this.http
-      .post<TripResponse>(this.apiUrl, trip)
+    return this.api
+      .post<TripResponse>('trips', trip)
       .pipe(map((createdTrip) => new Trip(createdTrip as unknown as Partial<Trip>)));
   }
 
@@ -64,8 +63,8 @@ export class TripsApiService {
    * @returns Observable of updated Trip
    */
   updateTrip(id: string, trip: Partial<Trip>): Observable<Trip> {
-    return this.http
-      .put<TripResponse>(`${this.apiUrl}/${id}`, trip)
+    return this.api
+      .put<TripResponse>(`trips/${id}`, trip)
       .pipe(map((updatedTrip) => new Trip(updatedTrip as unknown as Partial<Trip>)));
   }
 
@@ -75,6 +74,6 @@ export class TripsApiService {
    * @returns Observable of void
    */
   deleteTrip(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.api.delete<void>(`trips/${id}`);
   }
 }
