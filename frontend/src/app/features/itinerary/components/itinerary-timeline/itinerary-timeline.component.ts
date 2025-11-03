@@ -69,7 +69,7 @@ export class ItineraryTimelineComponent {
 
     // Sort items chronologically
     const sortedItems = [...this.items].sort(
-      (a, b) => a.startDate.getTime() - b.startDate.getTime()
+      (a, b) => a.startDate.getTime() - b.startDate.getTime(),
     );
 
     // Group by date
@@ -77,7 +77,7 @@ export class ItineraryTimelineComponent {
 
     sortedItems.forEach((item) => {
       const dateKey = this.getDateKey(item.startDate);
-      
+
       if (!groups.has(dateKey)) {
         groups.set(dateKey, {
           date: this.getStartOfDay(item.startDate),
@@ -264,7 +264,7 @@ export class ItineraryTimelineComponent {
       // Since ItineraryGap has startDateTime and endDateTime
       const itemEndTime = item.endDate.getTime();
       const gapStartTime = new Date(gap.startDateTime).getTime();
-      
+
       // Gap should start shortly after item ends
       return Math.abs(gapStartTime - itemEndTime) < 60000; // Within 1 minute
     });
