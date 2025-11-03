@@ -1,0 +1,87 @@
+<div class="add-item-container">
+  <div class="page-header">
+    <button class="back-button" (click)="cancel()" aria-label="Go back">
+      ← Back
+    </button>
+    <h1>Add Item to Itinerary</h1>
+  </div>
+
+  @if (error()) {
+    <div class="error-message" role="alert">
+      <span class="error-icon">⚠️</span>
+      <span>{{ error() }}</span>
+    </div>
+  }
+
+  @if (!hasSelectedType()) {
+    <!-- Type Selector View -->
+    <div class="type-selector">
+      <h2>What would you like to add?</h2>
+      <p class="subtitle">Choose the type of itinerary item</p>
+
+      <div class="type-grid">
+        @for (type of itemTypes; track type.value) {
+          <button 
+            class="type-card"
+            (click)="selectType(type.value)"
+            [attr.aria-label]="'Add ' + type.label"
+          >
+            <div class="type-icon">{{ type.icon }}</div>
+            <h3 class="type-label">{{ type.label }}</h3>
+            <p class="type-description">{{ type.description }}</p>
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <!-- Form View -->
+    <div class="form-container">
+      <div class="form-header">
+        <button 
+          class="change-type-button" 
+          (click)="backToSelector()"
+          aria-label="Change item type"
+        >
+          ← Change Type
+        </button>
+        <h2>Add {{ getSelectedTypeLabel() }}</h2>
+      </div>
+
+      <div class="form-content">
+        @switch (selectedType()) {
+          @case ('flight') {
+            <app-flight-form
+              [tripId]="tripId()!"
+              (submitFlight)="onFlightSubmit($event)"
+              (cancelForm)="onFormCancel()"
+            />
+          }
+          @case ('transport') {
+            <app-transport-form
+              [tripId]="tripId()!"
+              (submitTransport)="onTransportSubmit($event)"
+              (cancelForm)="onFormCancel()"
+            />
+          }
+          @case ('accommodation') {
+            <app-accommodation-form
+              [tripId]="tripId()!"
+              (submitAccommodation)="onAccommodationSubmit($event)"
+              (cancelForm)="onFormCancel()"
+            />
+          }
+        }
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="button" 
+          class="cancel-button"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
+</div>

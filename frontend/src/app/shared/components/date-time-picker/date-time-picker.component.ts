@@ -175,6 +175,13 @@ export class DateTimePickerComponent implements ControlValueAccessor {
   }
 
   /**
+   * Mark as touched (public method for template)
+   */
+  markAsTouched(): void {
+    this.onTouched();
+  }
+
+  /**
    * Clear the date and time values
    */
   clear(): void {

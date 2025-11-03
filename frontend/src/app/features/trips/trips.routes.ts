@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 /**
  * Trips feature routes
- * Placeholder for future trip management pages
+ * Manages trip list, detail, and itinerary item management
  */
 export const TRIPS_ROUTES: Routes = [
   {
@@ -11,5 +11,15 @@ export const TRIPS_ROUTES: Routes = [
       import('./pages/trips-dashboard/trips-dashboard.component').then(
         (m) => m.TripsDashboardComponent,
       ),
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./pages/trip-detail/trip-detail.component').then((m) => m.TripDetailComponent),
+  },
+  {
+    path: ':tripId/add-item',
+    loadComponent: () =>
+      import('../itinerary/pages/add-item/add-item.component').then((m) => m.AddItemComponent),
   },
 ];
