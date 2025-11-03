@@ -1,10 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItineraryItem, ItineraryGap } from '../../services/itinerary-api.service';
-import { Flight } from '../../../../core/models/flight.model';
-import { Transport } from '../../../../core/models/transport.model';
-import { Accommodation } from '../../../../core/models/accommodation.model';
-import { formatDate } from '../../../../core/utils/date.utils';
+import { DragDropListComponent, ReorderEvent } from '../drag-drop-list/drag-drop-list.component';
+import { GapIndicatorComponent } from '../gap-indicator/gap-indicator.component';
 
 /**
  * Interface for grouped itinerary items by date
@@ -19,26 +17,31 @@ interface GroupedItems {
  * ItineraryTimelineComponent
  *
  * Presentation component that displays itinerary items in a visual timeline
- * grouped by date with gap indicators.
+ * grouped by date with gap indicators and drag-and-drop support.
  *
  * Features:
  * - Groups items chronologically by date
  * - Displays items with color coding by type
  * - Shows gap indicators between items
- * - Emits click events for item editing
+ * - Supports drag-and-drop reordering within date groups
+ * - Emits events for item interactions
  * - Responsive design
  *
  * Usage:
  * <app-itinerary-timeline
  *   [items]="itineraryItems"
  *   [gaps]="detectedGaps"
- *   (itemClick)="onItemClick($event)">
+ *   [enableDragDrop]="true"
+ *   (itemClick)="onItemClick($event)"
+ *   (itemEdit)="onItemEdit($event)"
+ *   (itemDelete)="onItemDelete($event)"
+ *   (itemReorder)="onItemReorder($event)">
  * </app-itinerary-timeline>
  */
 @Component({
   selector: 'app-itinerary-timeline',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DragDropListComponent, GapIndicatorComponent],
   templateUrl: './itinerary-timeline.component.html',
   styleUrl: './itinerary-timeline.component.scss',
 })
@@ -54,9 +57,29 @@ export class ItineraryTimelineComponent {
   @Input() gaps: ItineraryGap[] = [];
 
   /**
-   * Event emitted when an item is clicked for editing
+   * Whether to enable drag-and-drop reordering
+   */
+  @Input() enableDragDrop = true;
+
+  /**
+   * Event emitted when an item is clicked for viewing/editing
    */
   @Output() itemClick = new EventEmitter<ItineraryItem>();
+
+  /**
+   * Event emitted when an item edit is requested
+   */
+  @Output() itemEdit = new EventEmitter<ItineraryItem>();
+
+  /**
+   * Event emitted when an item delete is requested
+   */
+  @Output() itemDelete = new EventEmitter<ItineraryItem>();
+
+  /**
+   * Event emitted when items are reordered via drag-and-drop
+   */
+  @Output() itemReorder = new EventEmitter<ReorderEvent>();
 
   /**
    * Group items by date for display
@@ -124,174 +147,64 @@ export class ItineraryTimelineComponent {
   }
 
   /**
-   * Format time for display (e.g., "2:30 PM")
+   * Handle item reorder from drag-drop component
    */
-  formatTime(date: Date): string {
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+  onItemReordered(event: ReorderEvent): void {
+    this.itemReorder.emit(event);
   }
 
   /**
-   * Format date and time for display
+   * Handle item click from drag-drop component
    */
-  formatDateTime(date: Date): string {
-    return formatDate(date, 'short');
-  }
-
-  /**
-   * Get CSS class for item type
-   */
-  getItemTypeClass(item: ItineraryItem): string {
-    return `item-type-${item.type}`;
-  }
-
-  /**
-   * Get icon for item type
-   */
-  getItemIcon(item: ItineraryItem): string {
-    const iconMap: Record<string, string> = {
-      flight: '✈️',
-      transport: '🚗',
-      accommodation: '🏨',
-    };
-    return iconMap[item.type] || '📍';
-  }
-
-  /**
-   * Get type label for display
-   */
-  getItemTypeLabel(item: ItineraryItem): string {
-    const labelMap: Record<string, string> = {
-      flight: 'Flight',
-      transport: 'Transport',
-      accommodation: 'Accommodation',
-    };
-    return labelMap[item.type] || item.type;
-  }
-
-  /**
-   * Handle item click
-   */
-  onItemClick(item: ItineraryItem): void {
+  onItemClicked(item: ItineraryItem): void {
     this.itemClick.emit(item);
   }
 
   /**
-   * Type guard for Flight
+   * Handle item edit from drag-drop component
    */
-  isFlight(item: ItineraryItem): item is Flight {
-    return item.type === 'flight';
+  onItemEdited(item: ItineraryItem): void {
+    this.itemEdit.emit(item);
   }
 
   /**
-   * Type guard for Transport
+   * Handle item delete from drag-drop component
    */
-  isTransport(item: ItineraryItem): item is Transport {
-    return item.type === 'transport';
+  onItemDeleted(item: ItineraryItem): void {
+    this.itemDelete.emit(item);
   }
 
   /**
-   * Type guard for Accommodation
+   * Get gaps that should be displayed within a specific date group
    */
-  isAccommodation(item: ItineraryItem): item is Accommodation {
-    return item.type === 'accommodation';
-  }
-
-  /**
-   * Cast to Flight
-   */
-  asFlight(item: ItineraryItem): Flight {
-    return item as Flight;
-  }
-
-  /**
-   * Cast to Transport
-   */
-  asTransport(item: ItineraryItem): Transport {
-    return item as Transport;
-  }
-
-  /**
-   * Cast to Accommodation
-   */
-  asAccommodation(item: ItineraryItem): Accommodation {
-    return item as Accommodation;
-  }
-
-  /**
-   * Get title for item
-   */
-  getItemTitle(item: ItineraryItem): string {
-    if (this.isFlight(item)) {
-      const flight = this.asFlight(item);
-      return `${flight.departureLocation.address} → ${flight.arrivalLocation.address}`;
-    } else if (this.isTransport(item)) {
-      const transport = this.asTransport(item);
-      return `${transport.departureLocation.address} → ${transport.arrivalLocation.address}`;
-    } else if (this.isAccommodation(item)) {
-      const accommodation = this.asAccommodation(item);
-      return accommodation.name;
+  getGapsForGroup(groupItems: ItineraryItem[]): ItineraryGap[] {
+    if (!this.gaps || this.gaps.length === 0 || !groupItems || groupItems.length === 0) {
+      return [];
     }
-    return 'Untitled';
-  }
 
-  /**
-   * Get subtitle for item
-   */
-  getItemSubtitle(item: ItineraryItem): string {
-    if (this.isFlight(item)) {
-      const flight = this.asFlight(item);
-      return flight.flightNumber ? `Flight ${flight.flightNumber}` : '';
-    } else if (this.isTransport(item)) {
-      const transport = this.asTransport(item);
-      return transport.transportType || '';
-    } else if (this.isAccommodation(item)) {
-      const accommodation = this.asAccommodation(item);
-      return accommodation.location.address;
+    // Find gaps that occur between consecutive items in this group
+    const relevantGaps: ItineraryGap[] = [];
+    
+    for (let i = 0; i < groupItems.length - 1; i++) {
+      const currentItem = groupItems[i];
+      const nextItem = groupItems[i + 1];
+      
+      // Find gap that starts after current item ends and before next item starts
+      const gap = this.gaps.find(g => {
+        const gapStart = new Date(g.startDateTime).getTime();
+        const gapEnd = new Date(g.endDateTime).getTime();
+        const itemEnd = currentItem.endDate.getTime();
+        const nextStart = nextItem.startDate.getTime();
+        
+        // Gap should be between these two items
+        return gapStart >= itemEnd && gapEnd <= nextStart;
+      });
+      
+      if (gap) {
+        relevantGaps.push(gap);
+      }
     }
-    return '';
-  }
-
-  /**
-   * Check if there's a gap after an item
-   */
-  hasGapAfter(item: ItineraryItem): boolean {
-    return this.gaps.some((gap) => {
-      // Check if gap occurs after this item
-      // Since ItineraryGap has startDateTime and endDateTime
-      const itemEndTime = item.endDate.getTime();
-      const gapStartTime = new Date(gap.startDateTime).getTime();
-
-      // Gap should start shortly after item ends
-      return Math.abs(gapStartTime - itemEndTime) < 60000; // Within 1 minute
-    });
-  }
-
-  /**
-   * Get gap details after an item
-   */
-  getGapAfter(item: ItineraryItem): ItineraryGap | undefined {
-    return this.gaps.find((gap) => {
-      const itemEndTime = item.endDate.getTime();
-      const gapStartTime = new Date(gap.startDateTime).getTime();
-      return Math.abs(gapStartTime - itemEndTime) < 60000;
-    });
-  }
-
-  /**
-   * Format gap start time
-   */
-  formatGapStart(gap: ItineraryGap): string {
-    return this.formatDateTime(new Date(gap.startDateTime));
-  }
-
-  /**
-   * Format gap end time
-   */
-  formatGapEnd(gap: ItineraryGap): string {
-    return this.formatDateTime(new Date(gap.endDateTime));
+    
+    return relevantGaps;
   }
 }

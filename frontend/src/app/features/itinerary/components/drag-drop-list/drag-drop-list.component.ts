@@ -5,7 +5,7 @@ import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk
 import { ItineraryItemComponent } from '../itinerary-item/itinerary-item.component';
 import { ItineraryItem } from '../../services/itinerary-api.service';
 
-interface ReorderEvent {
+export interface ReorderEvent {
   item: ItineraryItem;
   previousIndex: number;
   currentIndex: number;
