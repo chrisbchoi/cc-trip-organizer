@@ -1,0 +1,87 @@
+<div class="trips-dashboard">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">My Trips</h1>
+      <p class="dashboard-subtitle">Plan and manage your travel adventures</p>
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary btn-create"
+      (click)="onCreateTrip()"
+      aria-label="Create new trip"
+    >
+      <span aria-hidden="true">✈️</span>
+      New Trip
+    </button>
+  </header>
+
+  <!-- Loading State -->
+  @if (loading && !hasTrips) {
+    <div class="state-container">
+      <app-loading-spinner></app-loading-spinner>
+      <p class="state-message">Loading your trips...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error && !hasTrips) {
+    <div class="state-container error-state">
+      <div class="error-icon" aria-hidden="true">⚠️</div>
+      <h2 class="error-title">Failed to Load Trips</h2>
+      <p class="error-message">{{ error }}</p>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onRetry()"
+      >
+        Try Again
+      </button>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @else if (!hasTrips && !loading) {
+    <div class="state-container empty-state">
+      <div class="empty-icon" aria-hidden="true">🗺️</div>
+      <h2 class="empty-title">No Trips Yet</h2>
+      <p class="empty-message">
+        Start planning your next adventure by creating your first trip!
+      </p>
+      <button
+        type="button"
+        class="btn btn-primary btn-large"
+        (click)="onCreateTrip()"
+      >
+        <span aria-hidden="true">✈️</span>
+        Create Your First Trip
+      </button>
+    </div>
+  }
+
+  <!-- Trips List -->
+  @else {
+    <div class="dashboard-content">
+      <app-trip-list></app-trip-list>
+    </div>
+  }
+
+  <!-- Create Trip Form Dialog -->
+  @if (showCreateForm) {
+    <div class="dialog-overlay" (click)="onCancelCreate()">
+      <div class="dialog-container" (click)="$event.stopPropagation()" role="dialog" aria-labelledby="dialog-title" aria-modal="true">
+        <button
+          type="button"
+          class="dialog-close"
+          (click)="onCancelCreate()"
+          aria-label="Close dialog"
+        >
+          ×
+        </button>
+        <app-trip-form
+          (save)="onSaveTrip($event)"
+          (cancelForm)="onCancelCreate()"
+        ></app-trip-form>
+      </div>
+    </div>
+  }
+</div>
