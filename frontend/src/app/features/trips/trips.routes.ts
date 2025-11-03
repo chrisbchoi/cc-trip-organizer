@@ -22,4 +22,9 @@ export const TRIPS_ROUTES: Routes = [
     loadComponent: () =>
       import('../itinerary/pages/add-item/add-item.component').then((m) => m.AddItemComponent),
   },
+  {
+    path: ':tripId/edit-item/:itemId',
+    loadComponent: () =>
+      import('../itinerary/pages/add-item/add-item.component').then((m) => m.AddItemComponent),
+  },
 ];

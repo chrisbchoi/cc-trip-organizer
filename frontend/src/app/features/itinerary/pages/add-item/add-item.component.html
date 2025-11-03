@@ -3,7 +3,7 @@
     <button class="back-button" (click)="cancel()" aria-label="Go back">
       ← Back
     </button>
-    <h1>Add Item to Itinerary</h1>
+    <h1>{{ pageTitle() }}</h1>
   </div>
 
   @if (error()) {
@@ -13,8 +13,8 @@
     </div>
   }
 
-  @if (!hasSelectedType()) {
-    <!-- Type Selector View -->
+  @if (!hasSelectedType() && !isEditMode()) {
+    <!-- Type Selector View (only shown in add mode) -->
     <div class="type-selector">
       <h2>What would you like to add?</h2>
       <p class="subtitle">Choose the type of itinerary item</p>
@@ -37,14 +37,16 @@
     <!-- Form View -->
     <div class="form-container">
       <div class="form-header">
-        <button 
-          class="change-type-button" 
-          (click)="backToSelector()"
-          aria-label="Change item type"
-        >
-          ← Change Type
-        </button>
-        <h2>Add {{ getSelectedTypeLabel() }}</h2>
+        @if (!isEditMode()) {
+          <button 
+            class="change-type-button" 
+            (click)="backToSelector()"
+            aria-label="Change item type"
+          >
+            ← Change Type
+          </button>
+        }
+        <h2>{{ getActionLabel() }} {{ getSelectedTypeLabel() }}</h2>
       </div>
 
       <div class="form-content">
@@ -52,6 +54,7 @@
           @case ('flight') {
             <app-flight-form
               [tripId]="tripId()!"
+              [flight]="existingItem()"
               (submitFlight)="onFlightSubmit($event)"
               (cancelForm)="onFormCancel()"
             />
@@ -59,6 +62,7 @@
           @case ('transport') {
             <app-transport-form
               [tripId]="tripId()!"
+              [transport]="existingItem()"
               (submitTransport)="onTransportSubmit($event)"
               (cancelForm)="onFormCancel()"
             />
@@ -66,6 +70,7 @@
           @case ('accommodation') {
             <app-accommodation-form
               [tripId]="tripId()!"
+              [accommodation]="existingItem()"
               (submitAccommodation)="onAccommodationSubmit($event)"
               (cancelForm)="onFormCancel()"
             />
