@@ -1,0 +1,367 @@
+@use '../../../../../assets/styles/variables' as *;
+@use '../../../../../assets/styles/mixins' as *;
+
+.itinerary-timeline {
+  width: 100%;
+}
+
+// Empty state
+.timeline-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  text-align: center;
+  min-height: 200px;
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: $spacing-md;
+    opacity: 0.5;
+  }
+
+  .empty-message {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+  }
+}
+
+// Timeline content
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+// Date group
+.date-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+// Date header
+.date-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-sm 0;
+  border-bottom: 2px solid $color-border;
+  margin-bottom: $spacing-sm;
+
+  .date-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $color-primary;
+    flex-shrink: 0;
+  }
+
+  .date-label {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+}
+
+// Date items container
+.date-items {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding-left: $spacing-lg;
+  position: relative;
+
+  // Vertical timeline line
+  &::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: $color-border;
+  }
+}
+
+// Timeline item
+.timeline-item {
+  position: relative;
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  border-left: 4px solid $color-border;
+  cursor: pointer;
+  transition: all $transition-duration-fast ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateX(4px);
+
+    .item-action-hint {
+      opacity: 1;
+    }
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateX(2px);
+  }
+
+  // Type-specific colors
+  &.item-type-flight {
+    border-left-color: $color-flight;
+
+    .item-icon {
+      background-color: $color-flight-bg;
+      color: $color-flight;
+    }
+  }
+
+  &.item-type-transport {
+    border-left-color: $color-transport;
+
+    .item-icon {
+      background-color: $color-transport-bg;
+      color: $color-transport;
+    }
+  }
+
+  &.item-type-accommodation {
+    border-left-color: $color-accommodation;
+
+    .item-icon {
+      background-color: $color-accommodation-bg;
+      color: $color-accommodation;
+    }
+  }
+}
+
+// Item icon/badge
+.item-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm;
+  border-radius: $border-radius-sm;
+  background-color: $color-background;
+  min-width: 80px;
+  flex-shrink: 0;
+
+  .icon-symbol {
+    font-size: 24px;
+  }
+
+  .icon-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 60px;
+    padding: $spacing-xs;
+
+    .icon-symbol {
+      font-size: 20px;
+    }
+
+    .icon-label {
+      font-size: 10px;
+    }
+  }
+}
+
+// Item content
+.item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  min-width: 0; // Allow text truncation
+}
+
+// Item header
+.item-header {
+  .item-title {
+    margin: 0 0 $spacing-xs 0;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  .item-subtitle {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+// Item times
+.item-times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: $spacing-xs $spacing-md;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.time-detail {
+  display: flex;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+
+  .time-label {
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    min-width: 80px;
+  }
+
+  .time-value {
+    color: $color-text-primary;
+  }
+}
+
+// Item action hint
+.item-action-hint {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-xs;
+  color: $color-text-hint;
+  opacity: 0;
+  transition: opacity $transition-duration-fast ease;
+  margin-top: $spacing-xs;
+
+  .action-icon {
+    font-size: $font-size-sm;
+  }
+}
+
+// Gap indicator
+.gap-indicator {
+  position: relative;
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  margin: $spacing-sm 0;
+  margin-left: $spacing-lg;
+  background-color: rgba($color-warn, 0.05);
+  border-left: 4px solid $color-warn;
+  border-radius: $border-radius-sm;
+
+  .gap-icon {
+    flex-shrink: 0;
+
+    .icon-symbol {
+      font-size: 20px;
+    }
+  }
+
+  .gap-content {
+    flex: 1;
+  }
+
+  .gap-title {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  .gap-description {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.5;
+  }
+
+  .gap-suggestion {
+    display: inline-block;
+    margin-top: $spacing-xs;
+    font-weight: $font-weight-medium;
+    color: $color-warn;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .date-items {
+    padding-left: $spacing-md;
+
+    &::before {
+      left: 3px;
+      width: 1px;
+    }
+  }
+
+  .timeline-item {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  .gap-indicator {
+    margin-left: $spacing-md;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-header {
+    .date-label {
+      font-size: $font-size-base;
+    }
+  }
+
+  .date-items {
+    padding-left: $spacing-sm;
+  }
+
+  .timeline-item {
+    padding: $spacing-sm;
+  }
+
+  .gap-indicator {
+    margin-left: $spacing-sm;
+    padding: $spacing-sm;
+  }
+}
+
+// Print styles
+@media print {
+  .item-action-hint {
+    display: none;
+  }
+
+  .timeline-item {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .gap-indicator {
+    break-inside: avoid;
+    background-color: #fff !important;
+    border: 1px solid #ddd;
+  }
+}

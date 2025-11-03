@@ -1,0 +1,139 @@
+<!-- Itinerary Timeline Component -->
+<div class="itinerary-timeline">
+  <!-- Empty State -->
+  @if (groupedItems.length === 0) {
+    <div class="timeline-empty">
+      <div class="empty-icon" aria-hidden="true">📅</div>
+      <p class="empty-message">No itinerary items to display</p>
+    </div>
+  }
+
+  <!-- Timeline with grouped items -->
+  @else {
+    <div class="timeline-content">
+      @for (group of groupedItems; track group.date.getTime()) {
+        <!-- Date Header -->
+        <div class="date-group">
+          <div class="date-header">
+            <div class="date-marker" aria-hidden="true"></div>
+            <h3 class="date-label">{{ group.dateLabel }}</h3>
+          </div>
+
+          <!-- Items for this date -->
+          <div class="date-items">
+            @for (item of group.items; track item.id; let isLast = $last) {
+              <!-- Timeline Item -->
+              <div 
+                class="timeline-item" 
+                [class]="getItemTypeClass(item)"
+                (click)="onItemClick(item)"
+                (keydown.enter)="onItemClick(item)"
+                (keydown.space)="onItemClick(item)"
+                role="button"
+                tabindex="0"
+                [attr.aria-label]="'Edit ' + getItemTypeLabel(item) + ': ' + getItemTitle(item)">
+                
+                <!-- Item Icon/Badge -->
+                <div class="item-icon">
+                  <span class="icon-symbol" aria-hidden="true">{{ getItemIcon(item) }}</span>
+                  <span class="icon-label">{{ getItemTypeLabel(item) }}</span>
+                </div>
+
+                <!-- Item Content -->
+                <div class="item-content">
+                  <!-- Item Header -->
+                  <div class="item-header">
+                    <h4 class="item-title">{{ getItemTitle(item) }}</h4>
+                    @if (getItemSubtitle(item)) {
+                      <p class="item-subtitle">{{ getItemSubtitle(item) }}</p>
+                    }
+                  </div>
+
+                  <!-- Item Time Details -->
+                  <div class="item-times">
+                    <!-- Flight Details -->
+                    @if (isFlight(item)) {
+                      <div class="time-detail">
+                        <span class="time-label">Departure:</span>
+                        <span class="time-value">{{ formatTime(item.startDate) }}</span>
+                      </div>
+                      <div class="time-detail">
+                        <span class="time-label">Arrival:</span>
+                        <span class="time-value">{{ formatTime(item.endDate) }}</span>
+                      </div>
+                      @if (asFlight(item).airline) {
+                        <div class="time-detail">
+                          <span class="time-label">Airline:</span>
+                          <span class="time-value">{{ asFlight(item).airline }}</span>
+                        </div>
+                      }
+                    }
+
+                    <!-- Transport Details -->
+                    @else if (isTransport(item)) {
+                      <div class="time-detail">
+                        <span class="time-label">Departure:</span>
+                        <span class="time-value">{{ formatTime(item.startDate) }}</span>
+                      </div>
+                      <div class="time-detail">
+                        <span class="time-label">Arrival:</span>
+                        <span class="time-value">{{ formatTime(item.endDate) }}</span>
+                      </div>
+                      @if (asTransport(item).provider) {
+                        <div class="time-detail">
+                          <span class="time-label">Provider:</span>
+                          <span class="time-value">{{ asTransport(item).provider }}</span>
+                        </div>
+                      }
+                    }
+
+                    <!-- Accommodation Details -->
+                    @else if (isAccommodation(item)) {
+                      <div class="time-detail">
+                        <span class="time-label">Check-in:</span>
+                        <span class="time-value">{{ formatTime(item.startDate) }}</span>
+                      </div>
+                      <div class="time-detail">
+                        <span class="time-label">Check-out:</span>
+                        <span class="time-value">{{ formatTime(item.endDate) }}</span>
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Edit Indicator -->
+                  <div class="item-action-hint">
+                    <span class="action-icon" aria-hidden="true">✏️</span>
+                    <span class="action-text">Click to edit</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gap Indicator (if gap exists after this item) -->
+              @if (hasGapAfter(item)) {
+                @if (getGapAfter(item); as gap) {
+                  <div class="gap-indicator" role="alert">
+                    <div class="gap-icon" aria-hidden="true">
+                      <span class="icon-symbol">⚠️</span>
+                    </div>
+                    <div class="gap-content">
+                      <strong class="gap-title">Gap Detected</strong>
+                      <p class="gap-description">
+                        {{ gap.durationHours }} hour{{ gap.durationHours !== 1 ? 's' : '' }} gap 
+                        between {{ formatGapStart(gap) }} and 
+                        {{ formatGapEnd(gap) }}
+                        @if (gap.suggestion) {
+                          <br>
+                          <span class="gap-suggestion">Suggestion: Add {{ gap.suggestion }}</span>
+                        }
+                      </p>
+                    </div>
+                  </div>
+                }
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
