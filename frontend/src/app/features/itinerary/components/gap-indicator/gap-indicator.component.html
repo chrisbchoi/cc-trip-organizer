@@ -1,0 +1,48 @@
+<div class="gap-indicator" [ngClass]="getSeverityClass()">
+  <!-- Gap Icon and Header -->
+  <div class="gap-header">
+    <div class="gap-icon-wrapper">
+      <span class="gap-icon">{{ getGapIcon() }}</span>
+    </div>
+    <div class="gap-info">
+      <h4 class="gap-title">{{ getGapTypeLabel() }}</h4>
+      <div class="gap-duration">{{ formatDuration() }}</div>
+    </div>
+  </div>
+
+  <!-- Gap Time Range -->
+  <div class="gap-time-range">
+    <div class="time-item">
+      <span class="time-label">From:</span>
+      <span class="time-value">{{ formatDateTime(gap.startDateTime) }}</span>
+    </div>
+    <div class="time-separator">→</div>
+    <div class="time-item">
+      <span class="time-label">To:</span>
+      <span class="time-value">{{ formatDateTime(gap.endDateTime) }}</span>
+    </div>
+  </div>
+
+  <!-- Gap Message -->
+  <div class="gap-message">
+    <p class="message-text">{{ getGapMessage() }}</p>
+  </div>
+
+  <!-- Suggestion (if available) -->
+  <div class="gap-suggestion" *ngIf="getSuggestionText()">
+    <span class="suggestion-icon">💡</span>
+    <span class="suggestion-text">{{ getSuggestionText() }}</span>
+  </div>
+
+  <!-- Action Button -->
+  <div class="gap-actions">
+    <button
+      type="button"
+      class="fill-gap-btn"
+      (click)="onFillGap()"
+      [attr.aria-label]="'Fill gap: ' + getGapTypeLabel()">
+      <span class="btn-icon">➕</span>
+      <span class="btn-text">Fill This Gap</span>
+    </button>
+  </div>
+</div>
