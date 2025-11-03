@@ -1,0 +1,114 @@
+<form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="trip-form" novalidate>
+  <h2 class="form-title">{{ isEditMode ? 'Edit Trip' : 'Create New Trip' }}</h2>
+
+  <!-- Title Field -->
+  <div class="form-field">
+    <label for="title" class="form-label">
+      Title <span class="required-indicator">*</span>
+    </label>
+    <input
+      id="title"
+      type="text"
+      formControlName="title"
+      class="form-input"
+      placeholder="Enter trip title"
+      [attr.aria-invalid]="hasError('title', 'required') || hasError('title', 'maxlength')"
+      [attr.aria-describedby]="hasError('title', 'required') || hasError('title', 'maxlength') ? 'title-error' : null"
+    />
+    @if (getErrorMessage('title')) {
+      <div id="title-error" class="error-message" role="alert">
+        {{ getErrorMessage('title') }}
+      </div>
+    }
+  </div>
+
+  <!-- Description Field -->
+  <div class="form-field">
+    <label for="description" class="form-label">
+      Description
+    </label>
+    <textarea
+      id="description"
+      formControlName="description"
+      class="form-textarea"
+      placeholder="Add trip details (optional)"
+      rows="4"
+      [attr.aria-invalid]="hasError('description', 'maxlength')"
+      [attr.aria-describedby]="hasError('description', 'maxlength') ? 'description-error' : null"
+    ></textarea>
+    @if (getErrorMessage('description')) {
+      <div id="description-error" class="error-message" role="alert">
+        {{ getErrorMessage('description') }}
+      </div>
+    }
+  </div>
+
+  <!-- Date Fields Row -->
+  <div class="form-row">
+    <!-- Start Date Field -->
+    <div class="form-field">
+      <label for="startDate" class="form-label">
+        Start Date <span class="required-indicator">*</span>
+      </label>
+      <input
+        id="startDate"
+        type="date"
+        formControlName="startDate"
+        class="form-input"
+        [attr.aria-invalid]="hasError('startDate', 'required')"
+        [attr.aria-describedby]="hasError('startDate', 'required') ? 'startDate-error' : null"
+      />
+      @if (getErrorMessage('startDate')) {
+        <div id="startDate-error" class="error-message" role="alert">
+          {{ getErrorMessage('startDate') }}
+        </div>
+      }
+    </div>
+
+    <!-- End Date Field -->
+    <div class="form-field">
+      <label for="endDate" class="form-label">
+        End Date <span class="required-indicator">*</span>
+      </label>
+      <input
+        id="endDate"
+        type="date"
+        formControlName="endDate"
+        class="form-input"
+        [attr.aria-invalid]="hasError('endDate', 'required')"
+        [attr.aria-describedby]="hasError('endDate', 'required') ? 'endDate-error' : null"
+      />
+      @if (getErrorMessage('endDate')) {
+        <div id="endDate-error" class="error-message" role="alert">
+          {{ getErrorMessage('endDate') }}
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Date Range Error (form-level) -->
+  @if (getDateRangeError()) {
+    <div class="error-message error-message-form" role="alert">
+      {{ getDateRangeError() }}
+    </div>
+  }
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onCancel()"
+      [disabled]="false"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="submitted && tripForm.invalid"
+    >
+      {{ isEditMode ? 'Update Trip' : 'Create Trip' }}
+    </button>
+  </div>
+</form>

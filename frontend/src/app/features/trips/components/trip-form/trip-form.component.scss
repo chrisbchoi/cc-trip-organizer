@@ -1,0 +1,228 @@
+@use '../../../../../assets/styles/variables' as *;
+@use '../../../../../assets/styles/mixins' as *;
+
+.trip-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding: $spacing-xl;
+  background-color: $color-surface;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-title {
+  margin: 0 0 $spacing-md 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  text-align: center;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.form-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: 2px;
+}
+
+.required-indicator {
+  color: $color-warn;
+  margin-left: 2px;
+}
+
+.form-input,
+.form-textarea {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  transition: border-color $transition-duration-fast ease,
+    box-shadow $transition-duration-fast ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+
+  &:hover:not(:focus):not(:disabled) {
+    border-color: $color-text-disabled;
+  }
+
+  &:disabled {
+    background-color: $color-background;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: $color-warn;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($color-warn, 0.1);
+    }
+  }
+
+  &::placeholder {
+    color: $color-text-hint;
+  }
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.error-message {
+  font-size: $font-size-sm;
+  color: $color-warn;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: '⚠';
+    font-size: $font-size-base;
+  }
+}
+
+.error-message-form {
+  padding: $spacing-sm $spacing-md;
+  background-color: rgba($color-warn, 0.1);
+  border-left: 3px solid $color-warn;
+  border-radius: $border-radius-sm;
+  margin-top: -#{$spacing-sm};
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $color-border;
+
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+.btn {
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background-color $transition-duration-fast ease,
+    transform $transition-duration-fast ease, opacity $transition-duration-fast ease;
+  min-width: 120px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.btn-primary {
+  background-color: $color-primary;
+  color: $color-primary-contrast;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-primary-dark;
+  }
+}
+
+.btn-secondary {
+  background-color: $color-surface;
+  color: $color-text-primary;
+  border: 1px solid $color-border;
+
+  &:hover:not(:disabled) {
+    background-color: $color-background;
+    border-color: $color-text-disabled;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-border;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .trip-form {
+    padding: $spacing-lg;
+    max-width: 100%;
+  }
+
+  .form-title {
+    font-size: $font-size-lg;
+  }
+}
+
+@media (max-width: 480px) {
+  .trip-form {
+    padding: $spacing-md;
+  }
+
+  .form-input,
+  .form-textarea {
+    font-size: $font-size-sm;
+  }
+}
+
+// Print styles
+@media print {
+  .trip-form {
+    box-shadow: none;
+    border: 1px solid $color-border;
+  }
+
+  .form-actions {
+    display: none;
+  }
+}
