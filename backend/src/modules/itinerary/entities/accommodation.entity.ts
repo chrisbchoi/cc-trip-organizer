@@ -13,7 +13,7 @@ export class Accommodation {
   @Column('varchar', { length: 255 })
   name!: string;
 
-  @Column('text')
+  @Column('text', { name: 'location' })
   locationJson!: string;
 
   @Column('varchar', { length: 100, nullable: true, name: 'confirmation_number' })
