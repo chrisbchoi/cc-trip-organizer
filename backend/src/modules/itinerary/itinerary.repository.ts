@@ -271,13 +271,11 @@ export class ItineraryRepository {
         id: accommodationId,
         itineraryItemId: itemId,
         name: data.name,
+        locationJson: JSON.stringify(data.location),  // Set JSON directly instead of using setter
         confirmationNumber: data.confirmationNumber,
         phoneNumber: data.phoneNumber,
         duration: data.duration,
       });
-
-      // Set location using the virtual setter
-      accommodation.location = data.location;
 
       await manager.save(Accommodation, accommodation);
 
