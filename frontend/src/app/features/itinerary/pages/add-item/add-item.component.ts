@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { FlightFormComponent } from '../../components/flight-form/flight-form.component';
 import { TransportFormComponent } from '../../components/transport-form/transport-form.component';
 import { AccommodationFormComponent } from '../../components/accommodation-form/accommodation-form.component';
+import { ItineraryStore } from '../../store/itinerary.store';
+import { Flight } from '../../../../core/models/flight.model';
+import { Transport } from '../../../../core/models/transport.model';
+import { Accommodation } from '../../../../core/models/accommodation.model';
 
 type ItemType = 'flight' | 'transport' | 'accommodation' | null;
 
@@ -66,10 +70,9 @@ export class AddItemComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {}
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private itineraryStore = inject(ItineraryStore);
 
   ngOnInit(): void {
     // Get trip ID and item ID from route parameters
@@ -132,22 +135,70 @@ export class AddItemComponent implements OnInit {
   /**
    * Handle flight form submission
    */
-  onFlightSubmit(_flight: unknown): void {
-    this.navigateBack();
+  onFlightSubmit(flight: Partial<Flight>): void {
+    const tripId = this.tripId();
+    if (!tripId) {
+      this.error.set('No trip ID available');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.error.set(null);
+
+    // Call store to create flight
+    this.itineraryStore.createFlight({ tripId, flight });
+
+    // Navigate back after a short delay to allow state to update
+    setTimeout(() => {
+      this.isSubmitting.set(false);
+      this.navigateBack();
+    }, 500);
   }
 
   /**
    * Handle transport form submission
    */
-  onTransportSubmit(_transport: unknown): void {
-    this.navigateBack();
+  onTransportSubmit(transport: Partial<Transport>): void {
+    const tripId = this.tripId();
+    if (!tripId) {
+      this.error.set('No trip ID available');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.error.set(null);
+
+    // Call store to create transport
+    this.itineraryStore.createTransport({ tripId, transport });
+
+    // Navigate back after a short delay to allow state to update
+    setTimeout(() => {
+      this.isSubmitting.set(false);
+      this.navigateBack();
+    }, 500);
   }
 
   /**
    * Handle accommodation form submission
    */
-  onAccommodationSubmit(_accommodation: unknown): void {
-    this.navigateBack();
+  onAccommodationSubmit(accommodation: Partial<Accommodation>): void {
+    const tripId = this.tripId();
+    if (!tripId) {
+      this.error.set('No trip ID available');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.error.set(null);
+
+    // Call store to create accommodation
+    this.itineraryStore.createAccommodation({ tripId, accommodation });
+
+    // Navigate back after a short delay to allow state to update
+    setTimeout(() => {
+      this.isSubmitting.set(false);
+      this.navigateBack();
+    }, 500);
   }
 
   /**
