@@ -4,7 +4,7 @@ import { formatDate, formatTime, formatDateTime } from '../../core/utils/date.ut
 /**
  * Pipe for formatting dates in consistent format across the application.
  * Provides various formatting options for dates, times, and datetimes.
- * 
+ *
  * Usage:
  * ```
  * {{ date | dateFormat }}                    // Medium date format (default)
@@ -16,7 +16,7 @@ import { formatDate, formatTime, formatDateTime } from '../../core/utils/date.ut
  * {{ date | dateFormat:'datetime' }}         // Date and time
  * {{ date | dateFormat:'datetime':'medium':true }}  // Date and time with seconds
  * ```
- * 
+ *
  * Standalone pipe that can be imported directly into components.
  */
 @Pipe({
@@ -36,14 +36,14 @@ export class DateFormatPipe implements PipeTransform {
     value: Date | string | null | undefined,
     format: 'short' | 'medium' | 'long' | 'full' | 'time' | 'datetime' = 'medium',
     dateStyle: 'short' | 'medium' | 'long' | 'full' = 'medium',
-    includeSeconds: boolean = false
+    includeSeconds: boolean = false,
   ): string {
     if (value === null || value === undefined) {
       return '';
     }
-    
+
     let date: Date;
-    
+
     if (typeof value === 'string') {
       date = new Date(value);
     } else if (value instanceof Date) {
@@ -51,11 +51,11 @@ export class DateFormatPipe implements PipeTransform {
     } else {
       return '';
     }
-    
+
     if (isNaN(date.getTime())) {
       return '';
     }
-    
+
     switch (format) {
       case 'time':
         return formatTime(date, includeSeconds);

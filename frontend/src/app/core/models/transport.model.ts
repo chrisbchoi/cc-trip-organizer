@@ -85,7 +85,7 @@ export class Transport extends ItineraryItemBase {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -99,7 +99,7 @@ export class Transport extends ItineraryItemBase {
       bus: 'directions_bus',
       car: 'directions_car',
       ferry: 'directions_boat',
-      other: 'directions'
+      other: 'directions',
     };
     return iconMap[this.transportType] || 'directions';
   }
@@ -114,7 +114,7 @@ export class Transport extends ItineraryItemBase {
       bus: 'Bus',
       car: 'Car',
       ferry: 'Ferry',
-      other: 'Transport'
+      other: 'Transport',
     };
     return nameMap[this.transportType] || 'Transport';
   }
@@ -134,10 +134,7 @@ export class Transport extends ItineraryItemBase {
    * @returns Distance in kilometers
    */
   getDistance(): number {
-    return LocationUtils.calculateDistance(
-      this.departureLocation,
-      this.arrivalLocation
-    );
+    return LocationUtils.calculateDistance(this.departureLocation, this.arrivalLocation);
   }
 
   /**
@@ -167,7 +164,7 @@ export class Transport extends ItineraryItemBase {
     return this.startDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -179,7 +176,7 @@ export class Transport extends ItineraryItemBase {
     return this.endDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -223,7 +220,7 @@ export class Transport extends ItineraryItemBase {
       provider: this.provider,
       confirmationCode: this.confirmationCode,
       departureLocation: { ...this.departureLocation },
-      arrivalLocation: { ...this.arrivalLocation }
+      arrivalLocation: { ...this.arrivalLocation },
     });
   }
 }

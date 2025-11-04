@@ -84,7 +84,7 @@ export class Flight extends ItineraryItemBase {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -103,10 +103,7 @@ export class Flight extends ItineraryItemBase {
    * @returns Distance in kilometers
    */
   getDistance(): number {
-    return LocationUtils.calculateDistance(
-      this.departureLocation,
-      this.arrivalLocation
-    );
+    return LocationUtils.calculateDistance(this.departureLocation, this.arrivalLocation);
   }
 
   /**
@@ -136,7 +133,7 @@ export class Flight extends ItineraryItemBase {
     return this.startDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -148,7 +145,7 @@ export class Flight extends ItineraryItemBase {
     return this.endDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -192,7 +189,7 @@ export class Flight extends ItineraryItemBase {
       airline: this.airline,
       confirmationCode: this.confirmationCode,
       departureLocation: { ...this.departureLocation },
-      arrivalLocation: { ...this.arrivalLocation }
+      arrivalLocation: { ...this.arrivalLocation },
     });
   }
 }

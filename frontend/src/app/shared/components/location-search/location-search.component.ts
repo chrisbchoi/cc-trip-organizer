@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  forwardRef,
-  signal,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, forwardRef, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -65,11 +59,7 @@ export class LocationSearchComponent implements OnInit, ControlValueAccessor {
    */
   private setupSearchListener(): void {
     this.searchControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      )
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((query) => {
         if (query && query.length >= 3) {
           this.performGeocode(query);
@@ -196,10 +186,7 @@ export class LocationSearchComponent implements OnInit, ControlValueAccessor {
   writeValue(value: Location | null): void {
     this.selectedLocation = value;
     if (value) {
-      this.searchControl.setValue(
-        value.formattedAddress || value.address,
-        { emitEvent: false }
-      );
+      this.searchControl.setValue(value.formattedAddress || value.address, { emitEvent: false });
     } else {
       this.searchControl.setValue('', { emitEvent: false });
     }

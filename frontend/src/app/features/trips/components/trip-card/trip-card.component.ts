@@ -5,17 +5,17 @@ import { DateFormatPipe } from '../../../../shared/pipes';
 
 /**
  * Trip Card Component
- * 
+ *
  * Displays an individual trip as a card with trip information and action buttons.
  * This is a presentation component that emits events to parent components.
- * 
+ *
  * Features:
  * - Displays trip title, dates, and description
  * - Select event for viewing trip details
  * - Delete event for removing the trip
  * - Hover effects and card styling
  * - Accessible with ARIA attributes
- * 
+ *
  * Usage:
  * ```html
  * <app-trip-card

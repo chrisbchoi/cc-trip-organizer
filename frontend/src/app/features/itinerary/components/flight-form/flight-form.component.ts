@@ -9,12 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Flight } from '../../../../core/models/flight.model';
 import { Location } from '../../../../core/models/location.model';
 import { calculateDuration, formatDuration } from '../../../../core/utils/date.utils';
@@ -76,11 +71,11 @@ export class FlightFormComponent implements OnInit {
   durationMinutes = computed(() => {
     const departure = this.departureDateTime();
     const arrival = this.arrivalDateTime();
-    
+
     if (!departure || !arrival) {
       return 0;
     }
-    
+
     return calculateDuration(departure, arrival);
   });
 
@@ -98,7 +93,7 @@ export class FlightFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    
+
     // If editing existing flight, populate form
     if (this.flight) {
       this.populateForm(this.flight);
@@ -204,7 +199,7 @@ export class FlightFormComponent implements OnInit {
   private updateDepartureSignal(): void {
     const dateStr = this.flightForm.get('departureDate')?.value;
     const timeStr = this.flightForm.get('departureTime')?.value;
-    
+
     if (dateStr && timeStr) {
       const dateTime = this.combineDateAndTime(dateStr, timeStr);
       this.departureDateTime.set(dateTime);
@@ -219,7 +214,7 @@ export class FlightFormComponent implements OnInit {
   private updateArrivalSignal(): void {
     const dateStr = this.flightForm.get('arrivalDate')?.value;
     const timeStr = this.flightForm.get('arrivalTime')?.value;
-    
+
     if (dateStr && timeStr) {
       const dateTime = this.combineDateAndTime(dateStr, timeStr);
       this.arrivalDateTime.set(dateTime);
@@ -268,7 +263,7 @@ export class FlightFormComponent implements OnInit {
     // Validate that arrival is after departure
     const departure = this.departureDateTime();
     const arrival = this.arrivalDateTime();
-    
+
     if (!departure || !arrival || arrival <= departure) {
       // Show error (could be enhanced with a proper error message display)
       console.error('Arrival time must be after departure time');
@@ -338,7 +333,7 @@ export class FlightFormComponent implements OnInit {
    */
   getErrorMessage(fieldName: string): string {
     const field = this.flightForm.get(fieldName);
-    
+
     if (!field || !field.errors) {
       return '';
     }
@@ -369,7 +364,7 @@ export class FlightFormComponent implements OnInit {
   hasDateTimeError(): boolean {
     const departure = this.departureDateTime();
     const arrival = this.arrivalDateTime();
-    
+
     return this.submitted && !!departure && !!arrival && arrival <= departure;
   }
 }

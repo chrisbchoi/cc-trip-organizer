@@ -12,9 +12,9 @@ import { Trip } from '../../../../core/models/trip.model';
 
 /**
  * TripFormComponent
- * 
+ *
  * A reactive form for creating and editing trips with validation.
- * 
+ *
  * Features:
  * - Reactive form with FormBuilder
  * - Fields: title, description, startDate, endDate
@@ -22,10 +22,10 @@ import { Trip } from '../../../../core/models/trip.model';
  * - Custom date range validation (endDate must be after startDate)
  * - Emits form data to parent component
  * - Cancel functionality
- * 
+ *
  * Usage:
  * ```html
- * <app-trip-form 
+ * <app-trip-form
  *   [trip]="existingTrip"
  *   (save)="onSave($event)"
  *   (cancel)="onCancel()">
@@ -37,7 +37,7 @@ import { Trip } from '../../../../core/models/trip.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './trip-form.component.html',
-  styleUrl: './trip-form.component.scss'
+  styleUrl: './trip-form.component.scss',
 })
 export class TripFormComponent implements OnInit {
   /**
@@ -69,7 +69,7 @@ export class TripFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    
+
     // If editing an existing trip, populate the form
     if (this.trip) {
       this.populateForm(this.trip);
@@ -188,7 +188,7 @@ export class TripFormComponent implements OnInit {
    */
   getErrorMessage(fieldName: string): string {
     const field = this.tripForm.get(fieldName);
-    
+
     if (!field || !(field.touched || this.submitted)) {
       return '';
     }

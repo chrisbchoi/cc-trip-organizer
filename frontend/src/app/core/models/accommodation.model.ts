@@ -73,7 +73,7 @@ export class Accommodation extends ItineraryItemBase {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -104,7 +104,7 @@ export class Accommodation extends ItineraryItemBase {
     return this.startDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -116,7 +116,7 @@ export class Accommodation extends ItineraryItemBase {
     return this.endDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   }
 
@@ -128,7 +128,7 @@ export class Accommodation extends ItineraryItemBase {
     return this.startDate.toLocaleDateString('en-US', {
       weekday: 'short',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 
@@ -140,7 +140,7 @@ export class Accommodation extends ItineraryItemBase {
     return this.endDate.toLocaleDateString('en-US', {
       weekday: 'short',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 
@@ -219,7 +219,7 @@ export class Accommodation extends ItineraryItemBase {
       name: this.name,
       location: { ...this.location },
       confirmationNumber: this.confirmationNumber,
-      phoneNumber: this.phoneNumber
+      phoneNumber: this.phoneNumber,
     });
   }
 }

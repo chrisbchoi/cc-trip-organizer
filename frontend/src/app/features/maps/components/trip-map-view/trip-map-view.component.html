@@ -19,10 +19,12 @@
           <p class="map-placeholder-text">
             📍 Map showing {{ markers().length }} location(s)
           </p>
-          <p class="map-placeholder-subtext">
-            Center: Lat {{ (markers()[0]?.location.latitude || 0).toFixed(4) }}, 
-            Lng {{ (markers()[0]?.location.longitude || 0).toFixed(4) }}
-          </p>
+          @if (markers().length > 0 && markers()[0].location) {
+            <p class="map-placeholder-subtext">
+              Center: Lat {{ markers()[0].location.latitude.toFixed(4) }}, 
+              Lng {{ markers()[0].location.longitude.toFixed(4) }}
+            </p>
+          }
         </div>
         <div class="map-overlay">
           <p class="map-note">

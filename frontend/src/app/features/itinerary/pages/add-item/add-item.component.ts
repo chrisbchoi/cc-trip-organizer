@@ -24,10 +24,10 @@ interface ItemTypeOption {
     FormsModule,
     FlightFormComponent,
     TransportFormComponent,
-    AccommodationFormComponent
+    AccommodationFormComponent,
   ],
   templateUrl: './add-item.component.html',
-  styleUrl: './add-item.component.scss'
+  styleUrl: './add-item.component.scss',
 })
 export class AddItemComponent implements OnInit {
   tripId = signal<string | null>(null);
@@ -40,11 +40,9 @@ export class AddItemComponent implements OnInit {
 
   // Computed property to check if a type is selected
   hasSelectedType = computed(() => this.selectedType() !== null);
-  
+
   // Computed property for page title
-  pageTitle = computed(() => 
-    this.isEditMode() ? 'Edit Itinerary Item' : 'Add Item to Itinerary'
-  );
+  pageTitle = computed(() => (this.isEditMode() ? 'Edit Itinerary Item' : 'Add Item to Itinerary'));
 
   // Available item types
   itemTypes: ItemTypeOption[] = [
@@ -52,25 +50,25 @@ export class AddItemComponent implements OnInit {
       value: 'flight',
       label: 'Flight',
       icon: '✈️',
-      description: 'Add a flight to your itinerary'
+      description: 'Add a flight to your itinerary',
     },
     {
       value: 'transport',
       label: 'Transport',
       icon: '🚗',
-      description: 'Add ground transportation (train, bus, car, etc.)'
+      description: 'Add ground transportation (train, bus, car, etc.)',
     },
     {
       value: 'accommodation',
       label: 'Accommodation',
       icon: '🏨',
-      description: 'Add hotel or lodging'
-    }
+      description: 'Add hotel or lodging',
+    },
   ];
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -78,14 +76,14 @@ export class AddItemComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const tripIdParam = params.get('tripId');
       const itemIdParam = params.get('itemId');
-      
+
       this.tripId.set(tripIdParam);
       this.itemId.set(itemIdParam);
-      
+
       if (!tripIdParam) {
         this.error.set('No trip ID provided');
       }
-      
+
       // If item ID exists, we're in edit mode
       if (itemIdParam) {
         this.isEditMode.set(true);
@@ -101,7 +99,7 @@ export class AddItemComponent implements OnInit {
       }
     });
   }
-  
+
   /**
    * Load existing item data for edit mode
    */
@@ -112,9 +110,9 @@ export class AddItemComponent implements OnInit {
     // 1. Check the store first
     // 2. If not in store, fetch from API
     // 3. Set existingItem and selectedType based on loaded data
-    
+
     console.log('Loading item for edit:', itemId);
-    
+
     // Example: this.store.select(selectItemById(itemId)).subscribe(item => {
     //   if (item) {
     //     this.existingItem.set(item);
@@ -199,7 +197,7 @@ export class AddItemComponent implements OnInit {
     const option = this.itemTypes.find((t) => t.value === type);
     return option ? option.label : '';
   }
-  
+
   /**
    * Get action label (Add vs Edit)
    */

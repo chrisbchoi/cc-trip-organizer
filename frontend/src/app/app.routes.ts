@@ -12,8 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'trips',
-    loadChildren: () =>
-      import('./features/trips/trips.routes').then((m) => m.TRIPS_ROUTES),
+    loadChildren: () => import('./features/trips/trips.routes').then((m) => m.TRIPS_ROUTES),
   },
   {
     path: 'itinerary',

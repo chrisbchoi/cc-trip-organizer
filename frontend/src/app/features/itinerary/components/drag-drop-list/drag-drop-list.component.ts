@@ -33,7 +33,7 @@ export class DragDropListComponent {
 
   private _items = signal<ItineraryItem[]>([]);
   items$ = computed(() => this._items());
-  
+
   isDragging = signal<boolean>(false);
   draggedItemId = signal<string | null>(null);
 
@@ -49,13 +49,13 @@ export class DragDropListComponent {
 
     const items = [...this._items()];
     const movedItem = items[event.previousIndex];
-    
+
     // Reorder the array
     moveItemInArray(items, event.previousIndex, event.currentIndex);
-    
+
     // Update local state
     this._items.set(items);
-    
+
     // Reset drag state
     this.isDragging.set(false);
     this.draggedItemId.set(null);

@@ -121,9 +121,9 @@ export abstract class ItineraryItemBase {
       month: 'short',
       day: 'numeric',
       hour: 'numeric',
-      minute: '2-digit'
+      minute: '2-digit',
     };
-    
+
     const start = this.startDate.toLocaleDateString('en-US', options);
     const end = this.endDate.toLocaleDateString('en-US', options);
 

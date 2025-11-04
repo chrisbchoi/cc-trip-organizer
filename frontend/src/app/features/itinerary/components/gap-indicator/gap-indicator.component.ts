@@ -39,7 +39,7 @@ export class GapIndicatorComponent {
    */
   getSeverity(): GapSeverity {
     const hours = this.gap.durationHours;
-    
+
     if (hours < 3) {
       return 'info';
     } else if (hours < 12) {
@@ -88,7 +88,7 @@ export class GapIndicatorComponent {
   formatDuration(): string {
     const hours = Math.floor(this.gap.durationHours);
     const minutes = Math.round((this.gap.durationHours - hours) * 60);
-    
+
     if (hours === 0) {
       return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
     } else if (minutes === 0) {
@@ -118,7 +118,7 @@ export class GapIndicatorComponent {
   getGapMessage(): string {
     const duration = this.formatDuration();
     const severity = this.getSeverity();
-    
+
     if (this.gap.suggestion === 'transport') {
       if (severity === 'error') {
         return `You have a ${duration} gap without transportation. You may need to arrange travel between locations.`;

@@ -138,8 +138,12 @@ export class TransportFormComponent implements OnInit {
     });
 
     // Subscribe to date/time changes to update signals
-    this.transportForm.get('departureDate')?.valueChanges.subscribe(() => this.updateDepartureSignal());
-    this.transportForm.get('departureTime')?.valueChanges.subscribe(() => this.updateDepartureSignal());
+    this.transportForm
+      .get('departureDate')
+      ?.valueChanges.subscribe(() => this.updateDepartureSignal());
+    this.transportForm
+      .get('departureTime')
+      ?.valueChanges.subscribe(() => this.updateDepartureSignal());
     this.transportForm.get('arrivalDate')?.valueChanges.subscribe(() => this.updateArrivalSignal());
     this.transportForm.get('arrivalTime')?.valueChanges.subscribe(() => this.updateArrivalSignal());
   }

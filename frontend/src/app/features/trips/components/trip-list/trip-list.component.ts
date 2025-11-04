@@ -2,16 +2,19 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TripsStore } from '../../store/trips.store';
-import { ConfirmationDialogComponent, LoadingSpinnerComponent } from '../../../../shared/components';
+import {
+  ConfirmationDialogComponent,
+  LoadingSpinnerComponent,
+} from '../../../../shared/components';
 import { DateFormatPipe } from '../../../../shared/pipes';
 
 /**
  * Trip List Component
- * 
+ *
  * Displays a list of all trips in a grid layout with options to view, edit, and delete.
  * Shows an empty state when no trips exist.
  * Uses the TripsStore for state management and includes confirmation dialogs for destructive actions.
- * 
+ *
  * Features:
  * - Displays trips in a responsive grid
  * - Shows trip title, dates, and itinerary item count

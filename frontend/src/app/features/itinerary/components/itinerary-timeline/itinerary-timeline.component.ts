@@ -184,27 +184,27 @@ export class ItineraryTimelineComponent {
 
     // Find gaps that occur between consecutive items in this group
     const relevantGaps: ItineraryGap[] = [];
-    
+
     for (let i = 0; i < groupItems.length - 1; i++) {
       const currentItem = groupItems[i];
       const nextItem = groupItems[i + 1];
-      
+
       // Find gap that starts after current item ends and before next item starts
-      const gap = this.gaps.find(g => {
+      const gap = this.gaps.find((g) => {
         const gapStart = new Date(g.startDateTime).getTime();
         const gapEnd = new Date(g.endDateTime).getTime();
         const itemEnd = currentItem.endDate.getTime();
         const nextStart = nextItem.startDate.getTime();
-        
+
         // Gap should be between these two items
         return gapStart >= itemEnd && gapEnd <= nextStart;
       });
-      
+
       if (gap) {
         relevantGaps.push(gap);
       }
     }
-    
+
     return relevantGaps;
   }
 }

@@ -50,7 +50,7 @@ export class Trip {
     start.setHours(0, 0, 0, 0);
     const end = new Date(this.endDate);
     end.setHours(23, 59, 59, 999);
-    
+
     return now >= start && now <= end;
   }
 
@@ -63,7 +63,7 @@ export class Trip {
     now.setHours(0, 0, 0, 0);
     const end = new Date(this.endDate);
     end.setHours(23, 59, 59, 999);
-    
+
     return now > end;
   }
 
@@ -76,7 +76,7 @@ export class Trip {
     now.setHours(0, 0, 0, 0);
     const start = new Date(this.startDate);
     start.setHours(0, 0, 0, 0);
-    
+
     return now < start;
   }
 
@@ -99,7 +99,7 @@ export class Trip {
     now.setHours(0, 0, 0, 0);
     const start = new Date(this.startDate);
     start.setHours(0, 0, 0, 0);
-    
+
     const diffTime = start.getTime() - now.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
@@ -113,7 +113,7 @@ export class Trip {
     now.setHours(0, 0, 0, 0);
     const end = new Date(this.endDate);
     end.setHours(23, 59, 59, 999);
-    
+
     const diffTime = now.getTime() - end.getTime();
     return Math.floor(diffTime / (1000 * 60 * 60 * 24));
   }
@@ -151,7 +151,7 @@ export class Trip {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -162,15 +162,17 @@ export class Trip {
   getDateRangeString(): string {
     const options: Intl.DateTimeFormatOptions = {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     };
-    
+
     const start = this.startDate.toLocaleDateString('en-US', options);
     const end = this.endDate.toLocaleDateString('en-US', options);
     const year = this.endDate.getFullYear();
 
-    if (this.startDate.getFullYear() === this.endDate.getFullYear() &&
-        this.startDate.getMonth() === this.endDate.getMonth()) {
+    if (
+      this.startDate.getFullYear() === this.endDate.getFullYear() &&
+      this.startDate.getMonth() === this.endDate.getMonth()
+    ) {
       // Same month and year
       return `${this.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${this.endDate.getDate()}, ${year}`;
     }
@@ -190,7 +192,7 @@ export class Trip {
       startDate: new Date(this.startDate),
       endDate: new Date(this.endDate),
       createdAt: new Date(this.createdAt),
-      updatedAt: new Date(this.updatedAt)
+      updatedAt: new Date(this.updatedAt),
     });
   }
 }
