@@ -207,8 +207,6 @@ export class AccommodationFormComponent implements OnInit {
 
     const accommodationData: Partial<Accommodation> = {
       id: this.accommodation?.id,
-      tripId: this.tripId || this.accommodation?.tripId,
-      type: 'accommodation',
       title: formValue.title,
       name: formValue.name,
       startDate: checkIn,

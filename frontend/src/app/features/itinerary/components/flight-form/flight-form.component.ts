@@ -290,10 +290,8 @@ export class FlightFormComponent implements OnInit {
       country: formValue.arrivalCountry || undefined,
     };
 
-    // Build flight data
+    // Build flight data (excluding type and tripId - handled by backend)
     const flightData: Partial<Flight> = {
-      type: 'flight',
-      tripId: this.tripId || this.flight?.tripId,
       title: formValue.title,
       flightNumber: formValue.flightNumber,
       airline: formValue.airline,

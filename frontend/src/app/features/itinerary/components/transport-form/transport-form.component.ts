@@ -301,10 +301,8 @@ export class TransportFormComponent implements OnInit {
       country: formValue.arrivalCountry || undefined,
     };
 
-    // Build transport data
+    // Build transport data (excluding type and tripId - handled by backend)
     const transportData: Partial<Transport> = {
-      type: 'transport',
-      tripId: this.tripId || this.transport?.tripId,
       title: formValue.title,
       transportType: formValue.transportType,
       provider: formValue.provider || undefined,
