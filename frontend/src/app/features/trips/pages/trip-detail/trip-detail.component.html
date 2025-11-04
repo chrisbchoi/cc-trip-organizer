@@ -94,7 +94,35 @@
 
       <!-- Itinerary Section -->
       <section class="itinerary-section">
-        <h2 class="section-title">Itinerary</h2>
+        <div class="section-header">
+          <h2 class="section-title">Itinerary</h2>
+          
+          <!-- View Toggle Buttons -->
+          @if (hasItems) {
+            <div class="view-toggle" role="group" aria-label="View mode">
+              <button
+                type="button"
+                class="toggle-btn"
+                [class.active]="isTimelineView"
+                (click)="viewMode = 'timeline'"
+                [attr.aria-pressed]="isTimelineView"
+                title="Timeline view">
+                <span class="toggle-icon" aria-hidden="true">📋</span>
+                <span class="toggle-text">Timeline</span>
+              </button>
+              <button
+                type="button"
+                class="toggle-btn"
+                [class.active]="isMapView"
+                (click)="viewMode = 'map'"
+                [attr.aria-pressed]="isMapView"
+                title="Map view">
+                <span class="toggle-icon" aria-hidden="true">🗺️</span>
+                <span class="toggle-text">Map</span>
+              </button>
+            </div>
+          }
+        </div>
 
         <!-- Loading Itinerary -->
         @if (itineraryStore.loading()) {
@@ -123,7 +151,9 @@
 
         <!-- Itinerary Items -->
         @else {
-          <div class="itinerary-timeline">
+          <!-- Timeline View -->
+          @if (isTimelineView) {
+            <div class="itinerary-timeline">
             @for (item of itineraryItems; track item.id) {
               <div class="itinerary-item" [class.item-type-flight]="item.type === 'flight'"
                    [class.item-type-transport]="item.type === 'transport'"
@@ -244,7 +274,13 @@
                 }
               }
             }
-          </div>
+            </div>
+          }
+          
+          <!-- Map View -->
+          @else if (isMapView) {
+            <app-trip-map-view [items]="itineraryItems"></app-trip-map-view>
+          }
         }
       </section>
     </div>

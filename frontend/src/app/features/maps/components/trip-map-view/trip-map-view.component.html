@@ -1,0 +1,74 @@
+<div class="trip-map-view">
+  @if (hasLocations()) {
+    <!-- Map Container -->
+    <div class="map-container">
+      <div class="map-header">
+        <h3 class="map-title">Trip Map View</h3>
+        <button 
+          type="button"
+          class="btn-open-maps"
+          (click)="openInGoogleMaps()"
+          title="Open full map in Google Maps">
+          🗺️ Open in Google Maps
+        </button>
+      </div>
+
+      <!-- Map Embed (Note: In production, replace with Google Maps API key) -->
+      <div class="map-embed-wrapper">
+        <div class="map-placeholder">
+          <p class="map-placeholder-text">
+            📍 Map showing {{ markers().length }} location(s)
+          </p>
+          <p class="map-placeholder-subtext">
+            Center: Lat {{ (markers()[0]?.location.latitude || 0).toFixed(4) }}, 
+            Lng {{ (markers()[0]?.location.longitude || 0).toFixed(4) }}
+          </p>
+        </div>
+        <div class="map-overlay">
+          <p class="map-note">
+            📌 Click "Open in Google Maps" for full interactive map experience.
+          </p>
+        </div>
+      </div>
+
+      <!-- Location Markers List -->
+      <div class="markers-list">
+        <h4 class="markers-title">Locations ({{ markers().length }})</h4>
+        <div class="markers-grid">
+          @for (marker of markers(); track marker.index) {
+            <button
+              type="button" 
+              class="marker-card"
+              [class]="getMarkerColorClass(marker.itemType)"
+              (click)="openMarkerInMap(marker)"
+              [title]="'View ' + marker.label + ' on Google Maps'">
+              <div class="marker-icon">
+                <span class="marker-emoji">{{ getMarkerIcon(marker.itemType) }}</span>
+                <span class="marker-number">{{ marker.index }}</span>
+              </div>
+              <div class="marker-info">
+                <p class="marker-label">{{ marker.label }}</p>
+                <p class="marker-address">{{ marker.location.city || marker.location.address }}</p>
+                @if (marker.location.country) {
+                  <p class="marker-country">{{ marker.location.country }}</p>
+                }
+              </div>
+              <div class="marker-action">
+                <span class="link-icon" title="View on map">🔗</span>
+              </div>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <!-- Empty State -->
+    <div class="empty-state">
+      <div class="empty-icon">🗺️</div>
+      <h3 class="empty-title">No Locations Available</h3>
+      <p class="empty-message">
+        Add flights, transportation, or accommodations with location information to see them on the map.
+      </p>
+    </div>
+  }
+</div>

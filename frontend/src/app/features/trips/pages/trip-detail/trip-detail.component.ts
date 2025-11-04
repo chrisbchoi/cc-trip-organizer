@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TripsStore } from '../../store/trips.store';
 import { ItineraryStore } from '../../../itinerary/store/itinerary.store';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
+import { TripMapViewComponent } from '../../../maps/components/trip-map-view/trip-map-view.component';
 import { Trip } from '../../../../core/models/trip.model';
 import { Flight } from '../../../../core/models/flight.model';
 import { Transport } from '../../../../core/models/transport.model';
@@ -32,7 +33,7 @@ import { ItineraryItem } from '../../../itinerary/services/itinerary-api.service
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent],
+  imports: [CommonModule, LoadingSpinnerComponent, TripMapViewComponent],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss',
 })
@@ -46,6 +47,11 @@ export class TripDetailComponent implements OnInit {
    * Flag to track if initial load has been attempted
    */
   private hasLoadedData = false;
+
+  /**
+   * View mode: 'timeline' or 'map'
+   */
+  viewMode: 'timeline' | 'map' = 'timeline';
 
   /**
    * Inject TripsStore for trip data
@@ -244,5 +250,26 @@ export class TripDetailComponent implements OnInit {
    */
   asAccommodation(item: ItineraryItem): Accommodation {
     return item as Accommodation;
+  }
+
+  /**
+   * Toggle between timeline and map view
+   */
+  toggleView(): void {
+    this.viewMode = this.viewMode === 'timeline' ? 'map' : 'timeline';
+  }
+
+  /**
+   * Check if current view is timeline
+   */
+  get isTimelineView(): boolean {
+    return this.viewMode === 'timeline';
+  }
+
+  /**
+   * Check if current view is map
+   */
+  get isMapView(): boolean {
+    return this.viewMode === 'map';
   }
 }
