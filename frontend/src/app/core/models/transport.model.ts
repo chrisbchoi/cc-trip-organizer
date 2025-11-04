@@ -19,7 +19,12 @@ export class Transport extends ItineraryItemBase {
   constructor(data?: Partial<Transport>) {
     super(data);
     if (data) {
-      Object.assign(this, data);
+      // Assign transport-specific fields without overwriting dates converted by super()
+      if (data.transportType !== undefined) this.transportType = data.transportType;
+      if (data.provider !== undefined) this.provider = data.provider;
+      if (data.confirmationCode !== undefined) this.confirmationCode = data.confirmationCode;
+      if (data.departureLocation !== undefined) this.departureLocation = data.departureLocation;
+      if (data.arrivalLocation !== undefined) this.arrivalLocation = data.arrivalLocation;
       // Ensure type is set correctly
       this.type = 'transport';
     }

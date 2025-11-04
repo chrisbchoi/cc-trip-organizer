@@ -13,7 +13,11 @@ export class Accommodation extends ItineraryItemBase {
   constructor(data?: Partial<Accommodation>) {
     super(data);
     if (data) {
-      Object.assign(this, data);
+      // Assign accommodation-specific fields without overwriting dates converted by super()
+      if (data.name !== undefined) this.name = data.name;
+      if (data.location !== undefined) this.location = data.location;
+      if (data.confirmationNumber !== undefined) this.confirmationNumber = data.confirmationNumber;
+      if (data.phoneNumber !== undefined) this.phoneNumber = data.phoneNumber;
       // Ensure type is set correctly
       this.type = 'accommodation';
     }

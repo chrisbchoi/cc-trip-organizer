@@ -14,7 +14,12 @@ export class Flight extends ItineraryItemBase {
   constructor(data?: Partial<Flight>) {
     super(data);
     if (data) {
-      Object.assign(this, data);
+      // Assign flight-specific fields without overwriting dates converted by super()
+      if (data.flightNumber !== undefined) this.flightNumber = data.flightNumber;
+      if (data.airline !== undefined) this.airline = data.airline;
+      if (data.confirmationCode !== undefined) this.confirmationCode = data.confirmationCode;
+      if (data.departureLocation !== undefined) this.departureLocation = data.departureLocation;
+      if (data.arrivalLocation !== undefined) this.arrivalLocation = data.arrivalLocation;
       // Ensure type is set correctly
       this.type = 'flight';
     }
