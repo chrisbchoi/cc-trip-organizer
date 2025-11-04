@@ -48,4 +48,20 @@ export class Transport {
   set arrivalLocation(location: Location) {
     this.arrivalLocationJson = JSON.stringify(location);
   }
+
+  /**
+   * Custom JSON serialization to include parsed location objects
+   */
+  toJSON() {
+    return {
+      id: this.id,
+      itineraryItemId: this.itineraryItemId,
+      transportType: this.transportType,
+      departureLocation: this.departureLocation,
+      arrivalLocation: this.arrivalLocation,
+      provider: this.provider,
+      confirmationCode: this.confirmationCode,
+      duration: this.duration,
+    };
+  }
 }

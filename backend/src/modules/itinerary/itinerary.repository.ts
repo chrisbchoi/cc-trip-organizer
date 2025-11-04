@@ -80,17 +80,41 @@ export class ItineraryRepository {
 
   /**
    * Find all itinerary items for a trip, sorted by start date
+   * Loads related flight/transport/accommodation details for each item
    * @param tripId - Trip ID
    * @returns Promise<ItineraryItem[]>
    */
   async findByTripId(tripId: string): Promise<ItineraryItem[]> {
-    return this.itineraryItemRepository.find({
+    const items = await this.itineraryItemRepository.find({
       where: { tripId },
       order: {
         startDate: 'ASC',
         orderIndex: 'ASC',
       },
     });
+
+    // Load type-specific details for each item
+    for (const item of items) {
+      if (item.type === 'flight') {
+        const flight = await this.flightRepository.findOne({
+          where: { itineraryItemId: item.id },
+        });
+        // Attach flight data to item
+        (item as any).flight = flight;
+      } else if (item.type === 'transport') {
+        const transport = await this.transportRepository.findOne({
+          where: { itineraryItemId: item.id },
+        });
+        (item as any).transport = transport;
+      } else if (item.type === 'accommodation') {
+        const accommodation = await this.accommodationRepository.findOne({
+          where: { itineraryItemId: item.id },
+        });
+        (item as any).accommodation = accommodation;
+      }
+    }
+
+    return items;
   }
 
   /**

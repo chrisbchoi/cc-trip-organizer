@@ -37,4 +37,19 @@ export class Accommodation {
   set location(location: Location) {
     this.locationJson = JSON.stringify(location);
   }
+
+  /**
+   * Custom JSON serialization to include parsed location object
+   */
+  toJSON() {
+    return {
+      id: this.id,
+      itineraryItemId: this.itineraryItemId,
+      name: this.name,
+      location: this.location,
+      confirmationNumber: this.confirmationNumber,
+      phoneNumber: this.phoneNumber,
+      duration: this.duration,
+    };
+  }
 }
