@@ -197,7 +197,7 @@
                   @if (item.type === 'flight') {
                     <div class="item-header">
                       <h3 class="item-title">
-                        {{ asFlight(item).departureLocation.address }} → {{ asFlight(item).arrivalLocation.address }}
+                        {{ asFlight(item).departureLocation?.address || 'Unknown' }} → {{ asFlight(item).arrivalLocation?.address || 'Unknown' }}
                       </h3>
                       @if (asFlight(item).flightNumber) {
                         <span class="item-subtitle">Flight {{ asFlight(item).flightNumber }}</span>
@@ -225,7 +225,7 @@
                   @else if (item.type === 'transport') {
                     <div class="item-header">
                       <h3 class="item-title">
-                        {{ asTransport(item).departureLocation.address }} → {{ asTransport(item).arrivalLocation.address }}
+                        {{ asTransport(item).departureLocation?.address || 'Unknown' }} → {{ asTransport(item).arrivalLocation?.address || 'Unknown' }}
                       </h3>
                       @if (asTransport(item).transportType) {
                         <span class="item-subtitle">{{ asTransport(item).transportType }}</span>
@@ -247,7 +247,7 @@
                   @else if (item.type === 'accommodation') {
                     <div class="item-header">
                       <h3 class="item-title">{{ asAccommodation(item).name }}</h3>
-                      <span class="item-subtitle">{{ asAccommodation(item).location.address }}</span>
+                      <span class="item-subtitle">{{ asAccommodation(item).location?.address || 'No address' }}</span>
                     </div>
                     <div class="item-details">
                       <div class="detail-row">
