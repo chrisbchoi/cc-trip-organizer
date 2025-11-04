@@ -14,6 +14,13 @@ interface TripResponse {
   updatedAt: string;
 }
 
+interface TripExportData {
+  trip: TripResponse;
+  itineraryItems: unknown[];
+  exportedAt: string;
+  version: string;
+}
+
 /**
  * Service for making API calls related to trips
  * Uses the base ApiService for HTTP operations
@@ -75,5 +82,14 @@ export class TripsApiService {
    */
   deleteTrip(id: string): Observable<void> {
     return this.api.delete<void>(`trips/${id}`);
+  }
+
+  /**
+   * Export trip as JSON
+   * @param id Trip ID
+   * @returns Observable of export data
+   */
+  exportTripToJson(id: string): Observable<TripExportData> {
+    return this.api.get<TripExportData>(`trips/${id}/export/json`);
   }
 }

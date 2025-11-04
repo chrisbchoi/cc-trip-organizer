@@ -9,11 +9,13 @@ import {
   HttpCode,
   HttpStatus,
   ValidationPipe,
+  Header,
 } from '@nestjs/common';
 import { TripsService } from './trips.service';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { Trip } from './entities/trip.entity';
+import { ItineraryService } from '../itinerary/itinerary.service';
 
 /**
  * Controller for managing trips
@@ -21,7 +23,10 @@ import { Trip } from './entities/trip.entity';
  */
 @Controller('api/trips')
 export class TripsController {
-  constructor(private readonly tripsService: TripsService) {}
+  constructor(
+    private readonly tripsService: TripsService,
+    private readonly itineraryService: ItineraryService,
+  ) {}
 
   /**
    * Get all trips
@@ -93,5 +98,41 @@ export class TripsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
     return this.tripsService.remove(id);
+  }
+
+  /**
+   * Export trip as JSON
+   * GET /api/trips/:id/export/json
+   * @param id - Trip ID
+   * @returns Trip with all itinerary items as formatted JSON
+   * @throws NotFoundException if trip not found (404)
+   */
+  @Get(':id/export/json')
+  @HttpCode(HttpStatus.OK)
+  @Header('Content-Type', 'application/json')
+  async exportToJson(@Param('id') id: string): Promise<any> {
+    // Get trip data
+    const trip = await this.tripsService.findOne(id);
+    
+    // Get all itinerary items for this trip
+    const itineraryItems = await this.itineraryService.findByTripId(id);
+    
+    // Construct export object with trip and items
+    const exportData = {
+      trip: {
+        id: trip.id,
+        title: trip.title,
+        description: trip.description,
+        startDate: trip.startDate,
+        endDate: trip.endDate,
+        createdAt: trip.createdAt,
+        updatedAt: trip.updatedAt,
+      },
+      itineraryItems: itineraryItems,
+      exportedAt: new Date().toISOString(),
+      version: '1.0',
+    };
+    
+    return exportData;
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripsStore } from '../../store/trips.store';
 import { ItineraryStore } from '../../../itinerary/store/itinerary.store';
+import { TripsApiService } from '../../services/trips-api.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { TripMapViewComponent } from '../../../maps/components/trip-map-view/trip-map-view.component';
 import { Trip } from '../../../../core/models/trip.model';
@@ -54,14 +55,19 @@ export class TripDetailComponent implements OnInit {
   viewMode: 'timeline' | 'map' = 'timeline';
 
   /**
-   * Inject TripsStore for trip data
+   * Inject TripsStore for state management
    */
   readonly tripsStore = inject(TripsStore);
 
   /**
-   * Inject ItineraryStore for itinerary items
+   * Inject ItineraryStore for itinerary state management
    */
   readonly itineraryStore = inject(ItineraryStore);
+
+  /**
+   * Inject TripsApiService for export functionality
+   */
+  private tripsApiService = inject(TripsApiService);
 
   /**
    * Inject ActivatedRoute to get route params
@@ -271,5 +277,52 @@ export class TripDetailComponent implements OnInit {
    */
   get isMapView(): boolean {
     return this.viewMode === 'map';
+  }
+
+  /**
+   * Export trip data as JSON file
+   */
+  onExportToJson(): void {
+    if (!this.tripId) {
+      return;
+    }
+
+    const trip = this.tripsStore.selectedTrip();
+    if (!trip) {
+      return;
+    }
+
+    this.tripsApiService.exportTripToJson(this.tripId).subscribe({
+      next: (exportData) => {
+        // Create a blob from the JSON data
+        const json = JSON.stringify(exportData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        
+        // Create a download link and trigger it
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        // Generate filename: trip-title-date.json
+        const sanitizedTitle = trip.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        const dateStr = trip.startDate.toISOString().split('T')[0];
+        link.download = `trip-${sanitizedTitle}-${dateStr}.json`;
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error exporting trip:', error);
+        // You might want to show a notification here
+      },
+    });
   }
 }
