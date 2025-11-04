@@ -28,7 +28,7 @@ import { calculateDuration, formatDuration } from '../../../../core/utils/date.u
 export class AccommodationFormComponent implements OnInit {
   @Input() accommodation?: Accommodation;
   @Input() tripId?: string;
-  @Output() submitAccommodation = new EventEmitter<Accommodation>();
+  @Output() submitAccommodation = new EventEmitter<Partial<Accommodation>>();
   @Output() cancelForm = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
@@ -217,8 +217,8 @@ export class AccommodationFormComponent implements OnInit {
       notes: formValue.notes || undefined,
     };
 
-    const accommodation = new Accommodation(accommodationData);
-    this.submitAccommodation.emit(accommodation);
+    // Emit the plain data object (don't create Accommodation instance which adds type field)
+    this.submitAccommodation.emit(accommodationData);
   }
 
   /**
