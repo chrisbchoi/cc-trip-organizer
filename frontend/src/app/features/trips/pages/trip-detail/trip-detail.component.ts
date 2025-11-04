@@ -186,7 +186,7 @@ export class TripDetailComponent implements OnInit {
    */
   onAddItem(): void {
     if (this.tripId) {
-      this.router.navigate(['/trips', this.tripId, 'items', 'new']);
+      this.router.navigate(['/trips', this.tripId, 'add-item']);
     }
   }
 
@@ -195,7 +195,7 @@ export class TripDetailComponent implements OnInit {
    */
   onEditItem(itemId: string): void {
     if (this.tripId) {
-      this.router.navigate(['/trips', this.tripId, 'items', itemId, 'edit']);
+      this.router.navigate(['/trips', this.tripId, 'edit-item', itemId]);
     }
   }
 
