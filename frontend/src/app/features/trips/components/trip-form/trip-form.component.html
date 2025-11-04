@@ -1,5 +1,10 @@
 <form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="trip-form" novalidate>
-  <h2 class="form-title">{{ isEditMode ? 'Edit Trip' : 'Create New Trip' }}</h2>
+  <div class="form-header">
+    <h2 class="form-title">{{ isEditMode ? 'Edit Trip' : 'Create New Trip' }}</h2>
+    @if (isEditMode && enableAutoSave) {
+      <app-save-status-indicator [status]="autoSaveStatus"></app-save-status-indicator>
+    }
+  </div>
 
   <!-- Title Field -->
   <div class="form-field">

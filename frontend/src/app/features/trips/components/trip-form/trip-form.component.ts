@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -8,18 +8,24 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Trip } from '../../../../core/models/trip.model';
+import { AutoSaveService, AutoSaveStatus } from '../../../../core/services/auto-save.service';
+import { SaveStatusIndicatorComponent } from '../../../../shared/components/save-status-indicator/save-status-indicator.component';
 
 /**
  * TripFormComponent
  *
- * A reactive form for creating and editing trips with validation.
+ * A reactive form for creating and editing trips with validation and auto-save.
  *
  * Features:
  * - Reactive form with FormBuilder
  * - Fields: title, description, startDate, endDate
  * - Required field validation
  * - Custom date range validation (endDate must be after startDate)
+ * - Auto-save in edit mode (debounced 2 seconds)
+ * - Save status indicator
  * - Emits form data to parent component
  * - Cancel functionality
  *
@@ -35,15 +41,20 @@ import { Trip } from '../../../../core/models/trip.model';
 @Component({
   selector: 'app-trip-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SaveStatusIndicatorComponent],
   templateUrl: './trip-form.component.html',
   styleUrl: './trip-form.component.scss',
 })
-export class TripFormComponent implements OnInit {
+export class TripFormComponent implements OnInit, OnDestroy {
   /**
    * Optional trip to edit. If provided, form will be populated with existing values.
    */
   @Input() trip?: Trip;
+
+  /**
+   * Enable auto-save (default: true for edit mode)
+   */
+  @Input() enableAutoSave = true;
 
   /**
    * Emits when form is submitted with valid data.
@@ -65,7 +76,35 @@ export class TripFormComponent implements OnInit {
    */
   submitted = false;
 
-  constructor(private fb: FormBuilder) {}
+  /**
+   * Auto-save service
+   */
+  private autoSaveService = inject(AutoSaveService);
+
+  /**
+   * Form builder
+   */
+  private fb = inject(FormBuilder);
+
+  /**
+   * Current auto-save status
+   */
+  autoSaveStatus: AutoSaveStatus = AutoSaveStatus.IDLE;
+
+  /**
+   * Expose AutoSaveStatus enum to template
+   */
+  readonly AutoSaveStatus = AutoSaveStatus;
+
+  /**
+   * Subscription for auto-save
+   */
+  private autoSaveSubscription?: Subscription;
+
+  /**
+   * Subscription for status changes
+   */
+  private statusSubscription?: Subscription;
 
   ngOnInit(): void {
     this.initializeForm();
@@ -73,7 +112,19 @@ export class TripFormComponent implements OnInit {
     // If editing an existing trip, populate the form
     if (this.trip) {
       this.populateForm(this.trip);
+
+      // Setup auto-save for edit mode
+      if (this.enableAutoSave && this.trip.id) {
+        this.setupAutoSave();
+      }
     }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscriptions
+    this.autoSaveSubscription?.unsubscribe();
+    this.statusSubscription?.unsubscribe();
+    this.autoSaveService.reset();
   }
 
   /**
@@ -114,6 +165,51 @@ export class TripFormComponent implements OnInit {
       startDate: startDateStr,
       endDate: endDateStr,
     });
+  }
+
+  /**
+   * Setup auto-save for the form
+   */
+  private setupAutoSave(): void {
+    if (!this.trip?.id) {
+      return;
+    }
+
+    // Subscribe to status changes
+    this.statusSubscription = this.autoSaveService.status$.subscribe((status) => {
+      this.autoSaveStatus = status;
+    });
+
+    // Setup auto-save on form value changes
+    // Only save if form is valid and dirty
+    this.autoSaveSubscription = this.autoSaveService
+      .setupAutoSave(
+        this.tripForm.valueChanges.pipe(filter(() => this.tripForm.valid && this.tripForm.dirty)),
+        (value) => {
+          // Create trip data from form value
+          const tripData: Partial<Trip> = {
+            id: this.trip!.id,
+            title: value.title.trim(),
+            description: value.description?.trim() || '',
+            startDate: new Date(value.startDate),
+            endDate: new Date(value.endDate),
+          };
+
+          // Emit to parent for saving
+          this.save.emit(tripData);
+
+          // Mark form as pristine after auto-save
+          this.tripForm.markAsPristine();
+
+          // Return a dummy observable for the auto-save service
+          // The actual save is handled by the parent component via the save event
+          return new Promise<void>((resolve) => {
+            // Give parent time to process save
+            setTimeout(() => resolve(), 100);
+          }) as unknown as Observable<void>;
+        },
+      )
+      .subscribe();
   }
 
   /**

@@ -1,0 +1,4 @@
+<div class="save-status-indicator" [ngClass]="statusClass" *ngIf="status !== AutoSaveStatus.IDLE">
+  <span class="status-icon" [class.spin]="status === AutoSaveStatus.SAVING">{{ statusIcon }}</span>
+  <span class="status-message">{{ statusMessage }}</span>
+</div>
