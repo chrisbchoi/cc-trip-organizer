@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Trip } from '../../../core/models/trip.model';
 import { ApiService } from '../../../core/services/api.service';
 import { ItineraryItem } from '../../../core/models/itinerary-item.interface';
+import { EnvironmentService } from '../../../core/services/environment.service';
 
 interface TripResponse {
   id: string;
@@ -36,6 +38,8 @@ interface TripExportData {
 })
 export class TripsApiService {
   private api = inject(ApiService);
+  private http = inject(HttpClient);
+  private envService = inject(EnvironmentService);
 
   /**
    * Get all trips
@@ -97,5 +101,17 @@ export class TripsApiService {
    */
   exportTripToJson(id: string): Observable<TripExportData> {
     return this.api.get<TripExportData>(`trips/${id}/export/json`);
+  }
+
+  /**
+   * Export trip as iCalendar file
+   * @param id Trip ID
+   * @returns Observable of Blob (iCalendar file)
+   */
+  exportTripToICalendar(id: string): Observable<Blob> {
+    const url = `${this.envService.apiUrl}/trips/${id}/export/ical`;
+    return this.http.get(url, { 
+      responseType: 'blob'
+    });
   }
 }

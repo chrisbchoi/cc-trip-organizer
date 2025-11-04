@@ -5,6 +5,7 @@ import { TripsRepository } from './trips.repository';
 import { TripsService } from './trips.service';
 import { TripsController } from './trips.controller';
 import { ItineraryModule } from '../itinerary/itinerary.module';
+import { ExportService } from './export.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { ItineraryModule } from '../itinerary/itinerary.module';
     ItineraryModule,
   ],
   controllers: [TripsController],
-  providers: [TripsRepository, TripsService],
+  providers: [TripsRepository, TripsService, ExportService],
   exports: [TripsRepository, TripsService],
 })
 export class TripsModule {}

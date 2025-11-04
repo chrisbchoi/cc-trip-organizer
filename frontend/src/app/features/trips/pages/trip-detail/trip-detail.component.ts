@@ -325,4 +325,44 @@ export class TripDetailComponent implements OnInit {
       },
     });
   }
+
+  onExportToICalendar(): void {
+    if (!this.tripId) {
+      return;
+    }
+
+    const trip = this.tripsStore.selectedTrip();
+    if (!trip) {
+      return;
+    }
+
+    this.tripsApiService.exportTripToICalendar(this.tripId).subscribe({
+      next: (blob) => {
+        // Create a download link and trigger it
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        // Generate filename: trip-title-date.ics
+        const sanitizedTitle = trip.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        const dateStr = new Date().toISOString().split('T')[0];
+        link.download = `trip-${sanitizedTitle}-${dateStr}.ics`;
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error exporting trip to iCalendar:', error);
+        // You might want to show a notification here
+      },
+    });
+  }
 }

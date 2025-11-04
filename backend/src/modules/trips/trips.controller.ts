@@ -10,12 +10,15 @@ import {
   HttpStatus,
   ValidationPipe,
   Header,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { TripsService } from './trips.service';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { Trip } from './entities/trip.entity';
 import { ItineraryService } from '../itinerary/itinerary.service';
+import { ExportService } from './export.service';
 
 /**
  * Controller for managing trips
@@ -26,6 +29,7 @@ export class TripsController {
   constructor(
     private readonly tripsService: TripsService,
     private readonly itineraryService: ItineraryService,
+    private readonly exportService: ExportService,
   ) {}
 
   /**
@@ -143,5 +147,44 @@ export class TripsController {
     };
     
     return exportData;
+  }
+
+  /**
+   * Export trip as iCalendar (.ics) file
+   * GET /api/trips/:id/export/ical
+   * @param id - Trip ID
+   * @param res - Response object for setting headers and content
+   * @returns iCalendar file download
+   * @throws NotFoundException if trip not found (404)
+   */
+  @Get(':id/export/ical')
+  @HttpCode(HttpStatus.OK)
+  async exportToICalendar(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    // Get trip data
+    const trip = await this.tripsService.findOne(id);
+    
+    // Get all itinerary items with type-specific details
+    const baseItems = await this.itineraryService.findByTripId(id);
+    const itemsWithDetails = await Promise.all(
+      baseItems.map(async (baseItem) => {
+        const fullItem = await this.itineraryService.findOne(baseItem.id);
+        return fullItem;
+      }),
+    );
+    
+    // Generate iCalendar content
+    const icalContent = this.exportService.exportToICalendar(trip, itemsWithDetails);
+    
+    // Sanitize trip title for filename
+    const sanitizedTitle = trip.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    const filename = `trip-${sanitizedTitle}-${new Date().toISOString().split('T')[0]}.ics`;
+    
+    // Set headers for file download
+    res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(icalContent);
   }
 }
