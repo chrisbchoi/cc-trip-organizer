@@ -154,11 +154,20 @@ export class ItineraryApiService {
   private mapToItineraryItem(item: ItineraryItemResponse): ItineraryItem {
     switch (item.type) {
       case 'flight':
-        return new Flight(item as unknown as Partial<Flight>);
+        // Merge the nested flight data with the base item data
+        const flightData = { ...item, ...(item as any).flight };
+        delete (flightData as any).flight; // Remove nested object
+        return new Flight(flightData as unknown as Partial<Flight>);
       case 'transport':
-        return new Transport(item as unknown as Partial<Transport>);
+        // Merge the nested transport data with the base item data
+        const transportData = { ...item, ...(item as any).transport };
+        delete (transportData as any).transport; // Remove nested object
+        return new Transport(transportData as unknown as Partial<Transport>);
       case 'accommodation':
-        return new Accommodation(item as unknown as Partial<Accommodation>);
+        // Merge the nested accommodation data with the base item data
+        const accommodationData = { ...item, ...(item as any).accommodation };
+        delete (accommodationData as any).accommodation; // Remove nested object
+        return new Accommodation(accommodationData as unknown as Partial<Accommodation>);
       default:
         throw new Error(`Unknown itinerary item type: ${item.type}`);
     }
