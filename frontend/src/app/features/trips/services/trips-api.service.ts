@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Trip } from '../../../core/models/trip.model';
 import { ApiService } from '../../../core/services/api.service';
+import { ItineraryItem } from '../../../core/models/itinerary-item.interface';
 
 interface TripResponse {
   id: string;
@@ -14,9 +15,14 @@ interface TripResponse {
   updatedAt: string;
 }
 
+/**
+ * Export data structure returned by the backend
+ * Contains trip data, all itinerary items with their type-specific details,
+ * export timestamp, and version information
+ */
 interface TripExportData {
   trip: TripResponse;
-  itineraryItems: unknown[];
+  itineraryItems: ItineraryItem[];
   exportedAt: string;
   version: string;
 }

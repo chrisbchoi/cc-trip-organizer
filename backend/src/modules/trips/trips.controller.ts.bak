@@ -104,7 +104,7 @@ export class TripsController {
    * Export trip as JSON
    * GET /api/trips/:id/export/json
    * @param id - Trip ID
-   * @returns Trip with all itinerary items (including type-specific details) as formatted JSON
+   * @returns Trip with all itinerary items as formatted JSON
    * @throws NotFoundException if trip not found (404)
    */
   @Get(':id/export/json')
@@ -114,17 +114,8 @@ export class TripsController {
     // Get trip data
     const trip = await this.tripsService.findOne(id);
     
-    // Get all itinerary items for this trip (base items only)
-    const baseItems = await this.itineraryService.findByTripId(id);
-    
-    // Fetch each item with its type-specific details
-    // findOne in itineraryService loads the flight/transport/accommodation relation
-    const itemsWithDetails = await Promise.all(
-      baseItems.map(async (baseItem) => {
-        const fullItem = await this.itineraryService.findOne(baseItem.id);
-        return fullItem;
-      }),
-    );
+    // Get all itinerary items for this trip
+    const itineraryItems = await this.itineraryService.findByTripId(id);
     
     // Construct export object with trip and items
     const exportData = {
@@ -137,7 +128,7 @@ export class TripsController {
         createdAt: trip.createdAt,
         updatedAt: trip.updatedAt,
       },
-      itineraryItems: itemsWithDetails,
+      itineraryItems: itineraryItems,
       exportedAt: new Date().toISOString(),
       version: '1.0',
     };
