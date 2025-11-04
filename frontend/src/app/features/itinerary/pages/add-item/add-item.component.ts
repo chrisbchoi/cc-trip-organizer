@@ -149,10 +149,25 @@ export class AddItemComponent implements OnInit {
     this.itineraryStore.createFlight({ tripId, flight });
 
     // Navigate back after a short delay to allow state to update
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.navigateBack();
-    }, 500);
+    // Monitor store loading state to know when operation completes
+    const startTime = Date.now();
+    const checkCompletion = setInterval(() => {
+      if (!this.itineraryStore.loading()) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        const storeError = this.itineraryStore.error();
+        if (storeError) {
+          this.error.set(storeError);
+        } else {
+          this.navigateBack();
+        }
+      }
+      if (Date.now() - startTime > 10000) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        this.error.set("Request timed out. Please try again.");
+      }
+    }, 100);
   }
 
   /**
@@ -172,10 +187,25 @@ export class AddItemComponent implements OnInit {
     this.itineraryStore.createTransport({ tripId, transport });
 
     // Navigate back after a short delay to allow state to update
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.navigateBack();
-    }, 500);
+    // Monitor store loading state to know when operation completes
+    const startTime = Date.now();
+    const checkCompletion = setInterval(() => {
+      if (!this.itineraryStore.loading()) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        const storeError = this.itineraryStore.error();
+        if (storeError) {
+          this.error.set(storeError);
+        } else {
+          this.navigateBack();
+        }
+      }
+      if (Date.now() - startTime > 10000) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        this.error.set("Request timed out. Please try again.");
+      }
+    }, 100);
   }
 
   /**
@@ -195,10 +225,25 @@ export class AddItemComponent implements OnInit {
     this.itineraryStore.createAccommodation({ tripId, accommodation });
 
     // Navigate back after a short delay to allow state to update
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.navigateBack();
-    }, 500);
+    // Monitor store loading state to know when operation completes
+    const startTime = Date.now();
+    const checkCompletion = setInterval(() => {
+      if (!this.itineraryStore.loading()) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        const storeError = this.itineraryStore.error();
+        if (storeError) {
+          this.error.set(storeError);
+        } else {
+          this.navigateBack();
+        }
+      }
+      if (Date.now() - startTime > 10000) {
+        clearInterval(checkCompletion);
+        this.isSubmitting.set(false);
+        this.error.set("Request timed out. Please try again.");
+      }
+    }, 100);
   }
 
   /**
