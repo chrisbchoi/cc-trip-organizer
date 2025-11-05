@@ -46,6 +46,18 @@ describe('ItineraryService', () => {
     departureLocation: mockLocation,
     arrivalLocation: mockLocation,
     itineraryItem: mockItem,
+    toJSON() {
+      return {
+        id: this.id,
+        itineraryItemId: this.itineraryItemId,
+        departureLocation: this.departureLocation,
+        arrivalLocation: this.arrivalLocation,
+        flightNumber: this.flightNumber,
+        airline: this.airline,
+        confirmationCode: this.confirmationCode,
+        duration: this.duration,
+      };
+    },
   };
 
   beforeEach(async () => {
